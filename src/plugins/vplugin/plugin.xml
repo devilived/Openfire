@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin>
+    <class>com.vidmt.of.plugin.VPlugin</class>
+    <name>vplugin</name>
+    <description>filter the invalid client and reply the message to do the reconnection</description>
+    <author>Xingqisheng</author>
+    <version>1.0</version>
+    <date>9/16/2014</date>
+    <!--    <databaseKey>vplugin</databaseKey> -->
+	<databaseVersion>1</databaseVersion>
+    <minServerVersion>3.11.0</minServerVersion>
+    <adminconsole>
+ 		<tab id="tab-server">
+            <sidebar id="sidebar-server-settings">
+            	<item id="vplugin" name="${sidebar.vplugin}" url="vplugin.jsp"
+                     description="Click is trigger prop plugin" />
+            </sidebar>
+        </tab>
+    </adminconsole>
+</plugin>

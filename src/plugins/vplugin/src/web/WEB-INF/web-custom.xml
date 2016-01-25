@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<!-- MVC Servlet -->
+	<servlet>
+		<servlet-name>springServlet</servlet-name>
+		<servlet-class>com.vidmt.of.plugin.spring.VDispatcherServelet</servlet-class>
+	</servlet>
+	<!-- 事实上，只接收*.json/*.xml/*.api,但是根据PluginServlet:335,只判断了/*,因此其他的无意义，
+	同时根据PluginServlet：167行，如果有多个servlet-mapping,会生成多个servelet示例，这里只用一个来接收所有，
+	防止spring被多次初始化 至于真的要接收那些前缀，让前端的nginx反向代理来区分-->
+	<servlet-mapping>
+		<servlet-name>springServlet</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	<!-- <servlet> -->
+	<!-- <servlet-name>testServlet</servlet-name> -->
+	<!-- <servlet-class>com.vidmt.of.plugin.sub.test.TestServelet</servlet-class> -->
+	<!-- </servlet> -->
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>testServlet</servlet-name> -->
+	<!-- <url-pattern>/</url-pattern> -->
+	<!-- </servlet-mapping> -->
+</web-app>

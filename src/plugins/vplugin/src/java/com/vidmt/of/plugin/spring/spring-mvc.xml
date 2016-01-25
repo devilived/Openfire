@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<description>Spring Configuration</description>
+	<!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。 -->
+	<context:component-scan base-package="com.vidmt.of.plugin.sub"
+		use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!--设置拦截的路径 -->
+			<mvc:mapping path="/vplugin/api/1/**" />
+			<mvc:exclude-mapping path="/vplugin/api/1/user/register.*" />
+			<mvc:exclude-mapping path="/vplugin/api/1/user/login.*" />
+			<mvc:exclude-mapping path="/vplugin/api/1/user/reconnect.*" />
+			<mvc:exclude-mapping path="/vplugin/api/1/user/getUidByAccount.*" />
+			<mvc:exclude-mapping path="/vplugin/api/1/user/changePwd.*" />
+			<mvc:exclude-mapping path="/vplugin/api/1/pay/ali/notify.api" />
+			<mvc:exclude-mapping path="/vplugin/api/1/pay/wx/notify.api" />
+			
+			<bean class="com.vidmt.of.plugin.spring.AuthIntercepter" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<!--设置拦截的路径 -->
+			<mvc:mapping path="/vplugin/api/**" />			
+			<bean class="com.vidmt.of.plugin.spring.StatisticsIntercepter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<mvc:annotation-driven
+		content-negotiation-manager="contentNegotiationManager">
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+			<bean
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<!-- <property name="supportedMediaTypes"> -->
+				<!-- <list> -->
+				<!-- <value>text/html;charset=UTF-8</value> -->
+				<!-- <value>application/json;charset=UTF-8</value> -->
+				<!-- <value>application/*+json;charset=UTF-8</value> -->
+				<!-- </list> -->
+				<!-- </property> -->
+				<property name="features">
+					<array>
+						<!-- <value>WriteMapNullValue</value> -->
+						<!-- <value>WriteNullStringAsEmpty</value> -->
+						<value>WriteDateUseDateFormat</value>
+					</array>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<map>
+				<entry key="xml" value="application/xml" />
+				<entry key="json" value="application/json" />
+				<entry key="api" value="application/json" />
+			</map>
+		</property>
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="favorPathExtension" value="true" />
+	</bean>
+
+	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给defaultServletHandler处理 -->
+	<mvc:default-servlet-handler />
+	<!-- 定义无Controller的path<->view直接映射 -->
+	<mvc:resources mapping="/static/**" location="/static/"
+		cache-period="31536000" />
+	<mvc:view-controller path="/" view-name="redirect:/vplugin.jsp" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 最大5M -->
+		<property name="maxUploadSize" value="5242880" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 2M -->
+		<property name="maxInMemorySize" value="2097152" />
+	</bean>
+</beans>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vidmt.of.plugin.sub.tel.old.dao.UserDao">
+	<sql id="UserColumns">
+		id,pwd AS rawpwd,`name`,nick,email,phone,status,lvl,sex,birth,signature,address,avatar_uri,photo_uri,loc_private,avoid_disturb,create_date,modify_date,
+		lvl_end,TIMESTAMPDIFF(SECOND, now(), lvl_end) AS lvlttl
+<!-- 		TIMESTAMPDIFF(SECOND, lvl_start, now()) AS lvlpassed  -->
+	</sql>
+	<select id="load" resultType="User">
+		SELECT <include refid="UserColumns"/> FROM v_user WHERE id=#{id}
+	</select>
+	<select id="findByColumn" resultType="User">
+		SELECT <include refid="UserColumns"/> FROM v_user WHERE `${column}` = #{1}
+	</select>
+	<select id="fuzzySearch" resultType="User">
+		SELECT <include refid="UserColumns"/> FROM v_user
+		<if test="param1!=null"> <where> ${param1}</where></if>
+		<if test="param2!=null"> ${param2}</if>
+	</select>
+	<select id="findByUids" resultType="User">
+		SELECT 
+			<include refid="UserColumns"/>
+		FROM v_user a
+		WHERE id IN(
+		<foreach collection="uids" item="uid" separator=",">
+			#{uid}
+		</foreach>
+		)
+	</select>
+	<select id="findByPhones" resultType="User">
+		SELECT 
+			<include refid="UserColumns"/>
+		FROM v_user a
+		WHERE phone IN(
+		<foreach collection="phones" item="phone" separator=",">
+			#{phone}
+		</foreach>
+		)
+	</select>
+	<update id="update">
+		UPDATE v_user SET
+			name=#{name},
+			nick=#{nick},
+			email=#{email},
+			phone=#{phone},
+			status=#{status},
+			sex=#{sex},
+			birth=#{birth},
+			signature=#{signature},
+			address=#{address},
+			avatar_uri=#{avatarUri},
+			photo_uri=#{photoUri},
+			loc_private=#{locPrivate},
+			avoid_disturb=#{avoidDisturb}
+		WHERE id=#{id}
+	</update>
+</mapper>

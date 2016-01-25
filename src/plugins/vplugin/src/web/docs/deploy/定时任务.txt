@@ -1,0 +1,20 @@
+#查看cron是否在运行
+pgrep -l cron
+
+#启动cron
+service cron start
+
+#查看当前用户所属任务
+crontab -l
+
+#删除任务
+crontab -r
+
+#添加新的任务,每周三的凌晨4点执行脚本
+crontab -e
+0 4 * * 2 /root/bin/openfire/plugins/vplugin/web/docs/tasks/autobak.sh
+
+#重启cron
+sudo service cron restart
+
+

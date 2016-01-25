@@ -1,0 +1,45 @@
+项目后期构建过程：
+执行build.bat生成openfire.tar.gz放在服务器上并解压
+检查openfire.xml,spring-context.xml 中的数据库用户名密码
+检查log4j.xml中的日志级别
+执行openfire.sh启动OF，当看到”启动成功“的标记时，代表OF成功启动。
+
+=================================================================
+
+项目初次构建过程：
+1.编译OF
+替换org.jivesoftware.admin.AuthCheckFilter,org.jivesoftware.util.ClassUtils和build\lib\dist\log4j.xml,然后编译;
+替换conf/openfire.xml(注意用户名密码)
+修改src\plugins\vplugin\src\java\com\vidmt\of\plugin\spring\spring-context.xml里边的用户名密码
+编译vplugin.jar: ant clean openfire plugin -Dplugin=vplugin
+
+2.编译nginx：
+2.1.下载nginx源码
+2.2.安装pcre和zlib
+sudo apt-get install zlib1g-dev
+sudo apt-get install libpcre3 libpcre3-dev
+如果不能安装，可以从软件中心安装，或者添加软件源
+2.3. 配置
+./config --prefix=/home/pc1/bin/nginx
+2.4.编译和安装
+make&make install
+2.5.配置nginx.conf，添加proxy80.conf/proxy8080.conf
+注意修改word_process的数量为cpu的2倍
+2.6.启动nginx
+sudo ./nginx&
+
+3. 检查数据库配置：
+检查ofProperty中一下属性
+plugin.vplugin.telplugin.pay_notify_url 
+plugin.vplugin.telplugin.respath
+provider.admin.className
+provider.auth.className
+provider.user.className
+xmpp.proxy.enabled
+
+4.添加定期备份日志的定时任务:参照定时任务.txt,添加tasks/autobak.sh
+ 
+
+
+
+
