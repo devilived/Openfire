@@ -23,7 +23,7 @@ public class DeleteNearByLocationsTask {
 	 * 注意必须在spring-context.xml的default-lazy-init设定为false，否则，其由于没人引用，也就不会初始化，
 	 * 因此也就不会自动执行
 	 */
-	@Scheduled(cron = "0 0 3 ? * WED") // 每7天的凌晨3点执行一次
+	@Scheduled(cron = "0 0 3 ? * WED") // 每周三的凌晨3点执行一次
 	public void clearPoint() {
 		long start = System.currentTimeMillis();
 		doBackup();
