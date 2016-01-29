@@ -119,6 +119,11 @@ public class PushInterceptor implements PacketInterceptor {
 			User fromuser = userService.load(fromuid);
 			String displayName = getDisplayName(fromuser);
 			if (multiEl != null) {
+				Element datael = multiEl.element("data");
+				if (datael == null) {
+					log.warn("IOS推送错误，没有data字段，脏数据:{}", packet.toXML());
+					return;
+				}
 				String type = multiEl.element("data").attributeValue("type");
 				if ("AUDIO".equalsIgnoreCase(type)) {
 					msg = displayName + ":发送了一条语音";

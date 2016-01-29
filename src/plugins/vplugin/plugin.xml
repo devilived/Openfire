@@ -10,7 +10,20 @@
     <!--    <databaseKey>vplugin</databaseKey> -->
 	<databaseVersion>1</databaseVersion>
     <minServerVersion>3.11.0</minServerVersion>
-    <adminconsole>
+	<adminconsole>
+ 		<tab id="vplugin" name="${tab.vplugin}">
+            <sidebar id="sidebar-user-info" name="${sidebar.userinfo}">
+            	<item id="user" name="${item.user}" url="user.jsp"
+                     description="Click is trigger prop plugin" />
+            </sidebar>
+			<sidebar id="sidebar-statistics-info" name="${sidebar.statisticsinfo}">
+            	<item id="statistics" name="${item.statistics}" url="statistics.jsp"
+                     description="统计信息" />
+            </sidebar>
+        </tab>
+    </adminconsole>
+<!--   
+	<adminconsole>
  		<tab id="tab-server">
             <sidebar id="sidebar-server-settings">
             	<item id="vplugin" name="${sidebar.vplugin}" url="vplugin.jsp"
@@ -18,4 +31,5 @@
             </sidebar>
         </tab>
     </adminconsole>
+-->
 </plugin>

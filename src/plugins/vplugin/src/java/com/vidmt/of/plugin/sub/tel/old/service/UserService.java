@@ -77,10 +77,13 @@ public class UserService extends CrudService<UserDao, User> {
 			throw new IllegalArgumentException("illegal comuns:" + columns);
 		}
 		StringBuilder dsf = new StringBuilder();
-		for (String col : columns) {
-			dsf.append(String.format("AND `%s` LIKE '%%%s%%'", col, query));
+		if (columns != null) {
+			for (String col : columns) {
+				// dsf.append(String.format("AND `%s` LIKE '%%%s%%'", col,
+				// query));
+				dsf.append(String.format("AND `%s` = '%s'", col, query));
+			}
 		}
-
 		String limitstr = null;
 		if (offset != null || limit != null) {
 			limitstr = String.format(" LIMIT %d,%d", offset, limit);

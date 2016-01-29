@@ -3,33 +3,27 @@ package com.vidmt.of.plugin.sub.test;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jivesoftware.openfire.XMPPServer;
-import org.jivesoftware.openfire.roster.RosterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.xmpp.packet.JID;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.VPlugin;
 import com.vidmt.of.plugin.spring.CacheUtil;
-import com.vidmt.of.plugin.sub.extdb.Acc;
 import com.vidmt.of.plugin.sub.iospush.PushInterceptor;
 import com.vidmt.of.plugin.sub.iospush.PushPlugin;
 import com.vidmt.of.plugin.sub.tel.cache.LocCache;
 import com.vidmt.of.plugin.sub.tel.cache.TraceCache;
 import com.vidmt.of.plugin.sub.tel.cache.UserCache;
-import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
 import com.vidmt.of.plugin.utils.CommUtil;
-import com.vidmt.of.plugin.utils.VUtil;
 import com.vidmt.of.plugin.utils.VerStatUtil;
 
-@Controller
+//@Controller
 @RequestMapping("/vplugin/api/")
 public class TestController {
 	private static final Logger log = LoggerFactory.getLogger(TestController.class);
@@ -44,33 +38,6 @@ public class TestController {
 		json.put("c", "0");
 		json.put("m", "测试api url正常:" + req.getRequestURI());
 		return json;
-	}
-
-	@ResponseBody
-	@RequestMapping("/test/verinfo.*")
-	public JSONObject verinfo() {
-		return (JSONObject) JSON.toJSON(VerStatUtil.get());
-	}
-
-	@ResponseBody
-	@RequestMapping("/test/user/delete.*")
-	public JSONObject deleteuser(Long uid, String phone) {
-		RosterManager rostermgr = XMPPServer.getInstance().getRosterManager();
-		if (uid != null) {
-			rostermgr.deleteRoster(new JID(uid + "@" + VUtil.getDomain()));
-			userService.deleteByUid(uid);
-			VUtil.deleteRes(uid);
-		} else if (phone != null) {
-			Acc acc = new Acc("phone:" + phone);
-			User user = userService.findByAcc(acc);
-			if (user != null) {
-				uid = user.getId();
-				rostermgr.deleteRoster(new JID(uid + "@" + VUtil.getDomain()));
-				userService.deleteByUid(uid);
-				VUtil.deleteRes(uid);
-			}
-		}
-		return JSON.parseObject("{'c':0}");
 	}
 
 	@ResponseBody

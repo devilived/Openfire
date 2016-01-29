@@ -14,6 +14,11 @@ public final class Acc {
 	private final AccType type;
 	private final String value;
 
+	public Acc(AccType type, String value) {
+		this.type = type;
+		this.value = value;
+	}
+
 	public Acc(String fullacc) {
 		String[] arr;
 		if (fullacc.contains(":")) {
