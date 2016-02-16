@@ -99,10 +99,11 @@ jQuery(function($) {
         } else {
             url = 'api/web/user/get.json?page=1&pageSize=20';
         }
-        $.getJSON(url, function(json) {
+        $.get(url).success(function(json) {
         	pagination.current=1;
             pagination.init();
-            pagination.get(pagination.current);
+//            pagination.get(pagination.current);
+            refreshData(json.d);
         });
     });
 });

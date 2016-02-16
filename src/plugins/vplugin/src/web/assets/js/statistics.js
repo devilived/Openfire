@@ -36,9 +36,9 @@ jQuery(function($) {
 			data.KEY_WEEK_ALI_AVG=Math.floor(weekaliavg/data.KEY_STACK.length);
 			data.KEY_WEEK_WX_AVG=Math.floor(weekwxavg/data.KEY_STACK.length);
 			data.KEY_DAY_CNT=data.KEY_STACK.length;
+			var html = $("#money-tpl").html();
+			var tpl = Handlebars.compile(html);
+			$("#money-tpl").after(tpl(data));
 		}
-		var html = $("#money-tpl").html();
-		var tpl = Handlebars.compile(html);
-		$("#money-tpl").after(tpl(data));
 	});
 });

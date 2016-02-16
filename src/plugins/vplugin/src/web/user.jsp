@@ -80,13 +80,13 @@ window.USR_CNT=<%=userCount%>;
 <body>
 	<div class="admin-content">
 		<div class="am-g">
-			<div class="am-u-sm-12 am-u-md-6">
+			<div class="am-u-sm-12 am-u-md-7">
 				<ul class="am-pagination"></ul>
 			</div>
-			<div class="am-u-sm-12 am-u-md-3">
+			<div class="am-u-sm-12 am-u-md-2">
 				<div class="am-form-group">
-					<select name="acctype" data-am-selected="{btnSize: 'sm'}">
-						<option value="none">请选择......</option>
+					<select name="acctype" data-am-selected="{btnWidth: '100%',btnSize: 'sm'}">
+						<option value="none">请选择...</option>
 						<option value="uid">uid</option>
 						<option value="phone">手机号</option>
 					</select>
@@ -94,10 +94,8 @@ window.USR_CNT=<%=userCount%>;
 			</div>
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input name="accvalue" type="text" class="am-form-field" /> <span
-						class="am-input-group-btn">
-						<button class="am-btn am-btn-default" type="button" id="search">搜索</button>
-					</span>
+					<input name="accvalue" type="text" class="am-form-field" />
+					<span class="am-input-group-btn"><button class="am-btn am-btn-default" type="button" id="search">搜索</button></span>
 				</div>
 			</div>
 		</div>

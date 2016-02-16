@@ -7,10 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
@@ -30,8 +28,6 @@ import com.vidmt.of.plugin.sub.tel.entity.SysLog;
 import com.vidmt.of.plugin.sub.tel.entity.SysLog.Logtype;
 import com.vidmt.of.plugin.sub.tel.old.controller.FileController.ResType;
 import com.vidmt.of.plugin.sub.tel.old.dao.LogDao;
-
-import net.sf.antcontrib.logic.Throw;
 
 public class VUtil {
 	private static final Logger log = LoggerFactory.getLogger(VPlugin.class);

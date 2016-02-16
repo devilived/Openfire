@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSON;
 import com.vidmt.of.plugin.sub.tel.entity.Order.PayType;
 
 public class MoneyStatUtil {
+	private static final Logger log = LoggerFactory.getLogger(MoneyStatUtil.class);
+
 	public static void main(String[] args) {
 		long ADAY = 24 * 60 * 60 * 1000;
 		Date now = new Date();
@@ -55,52 +60,56 @@ public class MoneyStatUtil {
 	public static final String KEY_START_TIME = "KEY_START_TIME";
 	public static final String KEY_STACK = "KEY_STACK";
 	public static final String KEY_SUM_MONTH = "KEY_SUM_MONTH";
-	public static final String KEY_SUM_LASTMONTH="KEY_SUM_LASTMONTH";
+	public static final String KEY_SUM_LASTMONTH = "KEY_SUM_LASTMONTH";
 
 	public static synchronized void put(PayType paytype, Date time, int money) {
-		Object starttime = map.get(KEY_START_TIME);
-		if (starttime == null) {
-			starttime = time;
-		}
-
-		ADayInfo dayinfo = new ADayInfo(time, paytype, money);
-
-		Stack<ADayInfo> stack = (Stack<ADayInfo>) map.get(KEY_STACK);
-		if (stack == null) {
-			stack = new Stack<>();
-			map.put(KEY_STACK, stack);
-		} else if (stack.size() == 7) {
-			stack.pop();
-		}
-		Date lastTime = null;
-		if (stack.isEmpty()) {
-			stack.push(dayinfo);
-		} else {
-			ADayInfo lastItem = stack.get(stack.size() - 1);
-			lastTime = lastItem.time;
-			// 如果同一天，需要相加
-			if (DateUtil.sameDay(time, lastTime)) {
-				lastItem.time = time;
-				if (paytype == PayType.ALI) {
-					lastItem.alimoney += money;
-				} else if (paytype == PayType.WX) {
-					lastItem.wxmoney += money;
-				}
-			} else {
-				stack.push(dayinfo);
+		try {
+			Object starttime = map.get(KEY_START_TIME);
+			if (starttime == null) {
+				starttime = time;
 			}
-		}
 
-		if (lastTime == null || !DateUtil.sameMonth(time, lastTime)) {
-			int thismonth=(int) map.getOrDefault(KEY_SUM_MONTH,0);
-			map.put(KEY_SUM_LASTMONTH, thismonth);
-			
-			map.put(KEY_SUM_MONTH, money);
-		} else {
-			// 如果是同一个月，就相加
-			int monthsum = (int) map.get(KEY_SUM_MONTH);
-			monthsum += money;
-			map.put(KEY_SUM_MONTH, monthsum);
+			ADayInfo dayinfo = new ADayInfo(time, paytype, money);
+
+			Stack<ADayInfo> stack = (Stack<ADayInfo>) map.get(KEY_STACK);
+			if (stack == null) {
+				stack = new Stack<>();
+				map.put(KEY_STACK, stack);
+			} else if (stack.size() == 7) {
+				stack.pop();
+			}
+			Date lastTime = null;
+			if (stack.isEmpty()) {
+				stack.push(dayinfo);
+			} else {
+				ADayInfo lastItem = stack.get(stack.size() - 1);
+				lastTime = lastItem.time;
+				// 如果同一天，需要相加
+				if (DateUtil.sameDay(time, lastTime)) {
+					lastItem.time = time;
+					if (paytype == PayType.ALI) {
+						lastItem.alimoney += money;
+					} else if (paytype == PayType.WX) {
+						lastItem.wxmoney += money;
+					}
+				} else {
+					stack.push(dayinfo);
+				}
+			}
+
+			if (lastTime == null || !DateUtil.sameMonth(time, lastTime)) {
+				int thismonth = (int) map.getOrDefault(KEY_SUM_MONTH, 0);
+				map.put(KEY_SUM_LASTMONTH, thismonth);
+
+				map.put(KEY_SUM_MONTH, money);
+			} else {
+				// 如果是同一个月，就相加
+				int monthsum = (int) map.get(KEY_SUM_MONTH);
+				monthsum += money;
+				map.put(KEY_SUM_MONTH, monthsum);
+			}
+		} catch (Throwable e) {
+			log.error("统计收入失败", e);
 		}
 	}
 
