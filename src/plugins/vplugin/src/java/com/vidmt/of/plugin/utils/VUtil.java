@@ -31,6 +31,8 @@ import com.vidmt.of.plugin.sub.tel.entity.SysLog.Logtype;
 import com.vidmt.of.plugin.sub.tel.old.controller.FileController.ResType;
 import com.vidmt.of.plugin.sub.tel.old.dao.LogDao;
 
+import net.sf.antcontrib.logic.Throw;
+
 public class VUtil {
 	private static final Logger log = LoggerFactory.getLogger(VPlugin.class);
 	private static final DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -43,15 +45,13 @@ public class VUtil {
 		return Double.parseDouble(String.format("%.6f", d));
 	}
 
-	public static int getDate(Date d) {
-		Calendar cld = Calendar.getInstance();
-		cld.setTime(d);
-		return cld.get(Calendar.DAY_OF_MONTH);
-	}
-
-	public static void log(SysLog log) {
-		LogDao logdao = SpringContextHolder.getBean(LogDao.class);
-		logdao.save(log);
+	public static void log(SysLog syslog) {
+		try {
+			LogDao logdao = SpringContextHolder.getBean(LogDao.class);
+			logdao.save(syslog);
+		} catch (Throwable e) {
+			log.error("记录日志错误", e);
+		}
 	}
 
 	public static void log(Logtype type, Long createBy, Long tgtuid, String content) {
@@ -59,6 +59,8 @@ public class VUtil {
 		log.setTgtUid(tgtuid);
 		log.setContent(content);
 		log.setTime(new Date());
+
+		log(log);
 	}
 
 	public static void mirrorObj(Object src, Object dest) {

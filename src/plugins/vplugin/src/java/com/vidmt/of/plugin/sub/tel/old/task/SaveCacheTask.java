@@ -12,7 +12,7 @@ import com.vidmt.of.plugin.spring.StatisticsIntercepter;
 import com.vidmt.of.plugin.sub.tel.cache.TraceCache;
 import com.vidmt.of.plugin.sub.tel.entity.Trace;
 import com.vidmt.of.plugin.utils.CommUtil;
-import com.vidmt.of.plugin.utils.VUtil;
+import com.vidmt.of.plugin.utils.DateUtil;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,7 +39,7 @@ public class SaveCacheTask {
 
 	private void doSaveTraceWithTime() {
 		Date now = new Date();
-		int date = VUtil.getDate(now);
+		int date = DateUtil.getDate(now);
 		if (lastUpdateDate == null) {
 			lastUpdateDate = date;// 第一天什么也不执行
 		} else {
@@ -57,7 +57,9 @@ public class SaveCacheTask {
 		@SuppressWarnings("deprecation")
 		List<Trace> traces = TraceCache.getAll();
 		for (Trace trace : traces) {
-			TraceCache.removeAndSave(trace);
+			synchronized (trace) {
+				TraceCache.removeAndSave(trace);
+			}
 		}
 		log.info("保存足迹成功：" + CommUtil.fmtDate(new Date()));
 	}

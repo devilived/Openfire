@@ -31,6 +31,7 @@ import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.LvlService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
 import com.vidmt.of.plugin.utils.CommUtil;
+import com.vidmt.of.plugin.utils.MoneyStatUtil;
 import com.vidmt.of.plugin.utils.VUtil;
 import com.vidmt.of.plugin.utils.VerStatUtil;
 
@@ -54,9 +55,25 @@ public class WebController {
 			unit.put("lasttime", entry.getValue());
 			jarr.add(unit);
 		}
+		
+		JSONObject unit = new JSONObject();
+		unit.put("client", "a-111");
+		unit.put("lasttime", new Date());
+		jarr.add(unit);
+		
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("d", jarr);
+		return json;
+	}
+
+	@ResponseBody
+	@RequestMapping("/sys/moneyinfo.*")
+	public JSONObject moneyinfo() {
+//		MoneyStatUtil.main(null);
+		JSONObject json = new JSONObject();
+		json.put("c", 0);
+		json.put("d", MoneyStatUtil.get());
 		return json;
 	}
 

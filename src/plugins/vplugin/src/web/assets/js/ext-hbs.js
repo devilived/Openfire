@@ -17,7 +17,7 @@
 				return v1 / v2;
 		}
 	});
-	Handlebars.registerHelper("fmtDist", function(value) {
+	hbs.registerHelper("fmtDist", function(value) {
 		if(value<1000){
 			return "<span class='hbs-value'>"+value+"</span><span class='hbs-unit'>m</span>";
 		}

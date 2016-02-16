@@ -36,13 +36,15 @@ public class TraceCache {
 					String key = (String) element.getObjectKey();
 					if (key.startsWith(PRE_UID_)) {
 						Trace trace = (Trace) element.getObjectValue();
-						if (trace.getPoints().size() > MIN_POINTS) {
-							TraceService traceSvc = SpringContextHolder.getBean(TraceService.class);
-							try {
-								traceSvc.save(trace);
-								log.debug("保存过期足迹:" + trace);
-							} catch (DuplicateKeyException e) {
-								log.warn("保存足迹重复：" + trace.getUid() + trace.getHash());
+						synchronized (trace) {
+							if (trace.getPoints().size() > MIN_POINTS) {
+								TraceService traceSvc = SpringContextHolder.getBean(TraceService.class);
+								try {
+									traceSvc.save(trace);
+									log.debug("保存过期足迹:" + trace);
+								} catch (DuplicateKeyException e) {
+									log.warn("保存足迹重复：" + trace.getUid() + trace.getHash());
+								}
 							}
 						}
 					}

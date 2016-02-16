@@ -66,14 +66,10 @@ jQuery.noConflict();
 	<div class="admin-content">
 		<div class="am-g">
 			<div class="am-u-sm-12">
-				<table
-					class="am-table am-table-bd am-table-striped admin-content-table">
-					<thead>
-						<tr>
-							<th>客户端</th>
-							<th>最后访问日期</th>
-						</tr>
-					</thead>
+				<table class="am-table am-table-bd am-table-striped admin-content-table">
+					<caption>客户端版本统计</caption>
+					<thead><tr><th>客户端</th><th>最后访问日期</th></tr></thead>
+					
 					<tbody>
 					<script id="ver-tpl" type="text/x-handlebars-template">
 					{{#each this}}
@@ -82,6 +78,42 @@ jQuery.noConflict();
 							<td>{{lasttime}}</td>
 						</tr>
 					{{/each}}
+					</script>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="am-u-sm-12">
+				<table class="am-table am-table-bd am-table-striped admin-content-table">
+					<caption>收入统计</caption>
+					<thead><tr>
+							<th>&nbsp;</th>
+							<th>支付宝/天</th>
+							<th>微信/天</th>
+						</tr>
+					</thead>
+					<tbody>
+					<script id="money-tpl" type="text/x-handlebars-template">
+					{{#each KEY_STACK}}
+  						<tr class="row">
+							<td>{{showday ../KEY_DAY_CNT @index}}</td>
+							<td>{{cal alimoney '/' 100}}元</td>
+							<td>{{cal wxmoney '/' 100 }}元</td>
+						</tr>
+					{{/each}}
+					<tr class="row">
+						<td>一周平均</td>
+						<td>{{cal KEY_WEEK_ALI_AVG '/' 100}}元</td>
+						<td>{{cal KEY_WEEK_WX_AVG '/' 100}}元</td>
+					</tr>
+					<tr class="row">
+						<td>本月总共</td>
+						<td colspan='2'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
+					</tr>
+					<tr class="row">
+						<td>上月总共</td>
+						<td colspan='2'>{{cal KEY_SUM_LASTMONTH '/' 100}}元</td>
+					</tr>
 					</script>
 					</tbody>
 				</table>

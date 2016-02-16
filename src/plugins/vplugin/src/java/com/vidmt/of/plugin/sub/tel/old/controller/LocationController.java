@@ -26,6 +26,7 @@ import com.vidmt.of.plugin.sub.tel.old.entity.OldLocation;
 import com.vidmt.of.plugin.sub.tel.old.service.LocationService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
 import com.vidmt.of.plugin.sub.tel.old.utils.GeoUtil;
+import com.vidmt.of.plugin.utils.DateUtil;
 import com.vidmt.of.plugin.utils.VUtil;
 
 @Controller
@@ -129,25 +130,27 @@ public class LocationController {
 			trace = new Trace(loc.getUid());
 			trace.setDate(new java.sql.Date(loc.getTime().getTime()));
 		}
-		List<Location> points = trace.getPoints();
-		if (points.size() > 0) {
-			Location lastLoc = points.get(points.size() - 1);
-			double dist = GeoUtil.getDistance(lastLoc, loc);
-			if (dist > 10) {// 小于10m的点无效
+		synchronized (trace) {
+			List<Location> points = trace.getPoints();
+			if (points.size() > 0) {
+				Location lastLoc = points.get(points.size() - 1);
+				double dist = GeoUtil.getDistance(lastLoc, loc);
+				if (dist > 10) {// 小于10m的点无效
+					points.add(loc);
+				}
+			} else {
 				points.add(loc);
 			}
-		} else {
-			points.add(loc);
-		}
 
-		TraceCache.put(trace);
-		if (points.size() > 1) {
-			int firstDate = VUtil.getDate(points.get(0).getTime());
-			int lastDate = VUtil.getDate(points.get(points.size() - 1).getTime());
-			// 如果隔天，那么就存入数据库一次
-			if (firstDate != lastDate) {
-				trace.getPoints().remove(points.size() - 1);
-				TraceCache.removeAndSave(trace);
+			TraceCache.put(trace);
+			if (points.size() > 1) {
+				Date timenow = points.get(0).getTime();
+				Date timelast = points.get(points.size() - 1).getTime();
+				// 如果隔天，那么就存入数据库一次
+				if (!DateUtil.sameDay(timenow, timelast)) {
+					trace.getPoints().remove(points.size() - 1);
+					TraceCache.removeAndSave(trace);
+				}
 			}
 		}
 	}
