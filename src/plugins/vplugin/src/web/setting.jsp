@@ -15,13 +15,12 @@
 <c:set var="admin" value="${admin.manager}" />
 <%
 	admin.init(request, response, session, application, out);
-	int userCount = admin.getUserManager().getUserCount();
 %>
 
 <html>
 <head>
-<title><fmt:message key="item.user" /></title>
-<meta name="pageID" content="user" />
+<title><fmt:message key="item.setting" /></title>
+<meta name="pageID" content="setting" />
 <%-- ========================================================= --%>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,84 +53,27 @@
 <script src="assets/js/ext-hbs.js"></script>
 
 <script src="assets/plugins/amazeui/js/amazeui.min.js"></script>
-<script src="assets/plugins/am-pagination/amazeui-pagination.min.js"></script>
 <%-- ============================================================================= --%>
 <script>
 jQuery.noConflict();
-window.USR_CNT=<%=userCount%>;
 </script>
-<script src="assets/js/user.js"></script>
+<script src="assets/js/setting.js"></script>
 <style type="text/css">
-.avatar {
-	width: 20px;
-	height: 20px;
-}
-
-.presence {
-	width: 16px;
-	height: 16px;
-	border: 0
-}
-.am-pagination {
-	margin: 0
-}
 </style>
 </head>
 <body>
 	<div class="admin-content">
 		<div class="am-g">
-			<div class="am-u-sm-12 am-u-md-7">
-				<ul class="am-pagination"></ul>
-			</div>
-			<div class="am-u-sm-12 am-u-md-2">
-				<div class="am-form-group">
-					<select name="acctype" data-am-selected="{btnWidth: '100%',btnSize: 'sm'}">
-						<option value="none">请选择...</option>
-						<option value="uid">uid</option>
-						<option value="phone">手机号</option>
-					</select>
-				</div>
-			</div>
-			<div class="am-u-sm-12 am-u-md-3">
-				<div class="am-input-group am-input-group-sm">
-					<input name="accvalue" type="text" class="am-form-field" />
-					<span class="am-input-group-btn"><button class="am-btn am-btn-default" type="button" id="search">搜索</button></span>
-				</div>
-			</div>
-		</div>
-		<div class="am-g">
 			<div class="am-u-sm-12">
-				<table
-					class="am-table am-table-bd am-table-striped admin-content-table">
-					<thead>
-						<tr>
-							<th>头像</th>
-							<th>UID</th>
-							<th>手机号</th>
-							<th>昵称</th>
-							<th>在线状态</th>
-							<th>会员等级</th>
-							<th>到期日期</th>
-							<th>管理</th>
-						</tr>
-					</thead>
+				<table class="am-table am-table-bd am-table-striped admin-content-table">
+					<thead><tr><th>属性</th><th>值</th><th>管理</th></tr></thead>
+					
 					<tbody>
-					<script id="user-tpl" type="text/x-handlebars-template">
+					<script id="prop-tpl" type="text/x-handlebars-template">
 					{{#each this}}
-  						<tr class="row" data-uid="{{uid}}">
-							<td>{{#if avatar}}<img class="avatar" src="/TelServer{{avatar}}">{{else}}&nbsp;{{/if}}</td>
-							<td>{{ifnull uid}}</td>
-							<td>{{ifnull phone}}</td>
-							<td>{{ifnull nick}}</td>
-							{{#unless presence}}<td><img class="presence" src="/images/user-clear-16x16.gif"/></td>{{/unless}}
-							{{#compare presence '==' 'available'}}<td><img class="presence" src="/images/user-green-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'chat'}}<td><img class="presence" src="/images/user-green-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'away'}}<td><img class="presence" src="/images/user-yellow-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'xa'}}<td><img class="presence" src="/images/user-yellow-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'dnd'}}<td><img class="presence" src="/images/user-red-16x16.gif"/></td>{{/compare}}
-
-							<td>{{ifnull lvl}}</td>
-							<td>{{ifnull endTime}}</td>
+  						<tr class="row">
+							<td>{{key}}</td>
+							<td>{{value}}</td>
 							<td>
 								<div class="am-btn-toolbar">
 								  <div class="am-btn-group am-btn-group-xs">
@@ -149,11 +91,11 @@ window.USR_CNT=<%=userCount%>;
 		</div>
 	</div>
 	
-	<div class="am-modal am-modal-prompt" tabindex="-1" id="userEditLayer">
+	<div class="am-modal am-modal-prompt" tabindex="-1" id="propEditLayer">
 	  <div class="am-modal-dialog">
-	    <div class="am-modal-hd">用户</div>
+	    <div class="am-modal-hd">属性</div>
 	    <div class="am-modal-bd">
-	    <input type="text" class="am-modal-prompt-input" placeholder="级别">
+	    <input type="text" class="am-modal-prompt-input" placeholder="值">
 <!-- 	       	级别:<select name="lvl" data-am-selected="{btnSize: 'sm'}"> -->
 <!-- 						<option value="">取消会员</option> -->
 <!-- 						<option value="TRY">TRY</option> -->

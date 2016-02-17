@@ -56,11 +56,6 @@ public class WebController {
 			jarr.add(unit);
 		}
 		
-		JSONObject unit = new JSONObject();
-		unit.put("client", "a-111");
-		unit.put("lasttime", new Date());
-		jarr.add(unit);
-		
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("d", jarr);

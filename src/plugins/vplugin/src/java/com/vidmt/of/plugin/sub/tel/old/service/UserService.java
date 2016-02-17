@@ -44,16 +44,16 @@ public class UserService extends CrudService<UserDao, User> {
 	@Override
 	public User load(Long id) {
 		User user = UserCache.get(id);
+		if (user == null) {
+			user = dao.load(id);
+		}
 		if (user != null) {
 			this.checkLvlttl(user);
-		} else {
-			user = dao.load(id);
-			if (user != null) {
-				UserCache.put(user);
-			}
+			UserCache.put(user);
 		}
 		return user;
 	}
+
 	@Transactional(readOnly = true)
 	public String getPwd(Acc acc) {
 		if (AccType.uid == acc.type()) {
@@ -120,10 +120,12 @@ public class UserService extends CrudService<UserDao, User> {
 		UserCache.remove(uid);
 		dao.updateUserPayed(uid, lvl.getName(), lvl.getDuring());
 	}
+
 	@Transactional(readOnly = true)
 	public Long getUserCount() {
 		return dao.getUserCount();
 	}
+
 	@Transactional(readOnly = true)
 	public List<Long> getAllUid() {
 		return dao.getAllUid();
@@ -162,21 +164,21 @@ public class UserService extends CrudService<UserDao, User> {
 			return null;
 		}
 	}
+
 	public User login(Acc acc, String plainpwd) throws UserNotExistsException {
 		if (acc.isAdmin()) {
 			throw new IllegalArgumentException("admin cant be login by api");
 		}
 		try {
 			AuthFactory.authenticate(acc.asString(), plainpwd);
-			User user = findByAcc(acc);
-			this.checkLvlttl(user);
-			return user;
+			return findByAcc(acc);
 		} catch (UnauthorizedException | ConnectionException | InternalUnauthenticatedException e) {
 			throw new UserNotExistsException(acc);
 		}
 	}
+
 	public User findByAcc(Acc acc) {
-		User user=null;
+		User user = null;
 		if (acc.type() == Acc.AccType.uid) {
 			user = this.load(Long.valueOf(acc.value()));
 		} else {
@@ -187,6 +189,7 @@ public class UserService extends CrudService<UserDao, User> {
 		}
 		return user;
 	}
+
 	public List<User> findByUids(List<Long> uids) {
 		List<Long> tmpuids = new ArrayList<>(uids);
 
@@ -200,10 +203,15 @@ public class UserService extends CrudService<UserDao, User> {
 			}
 		}
 		if (tmpuids.size() > 0) {
-			ulists.addAll(dao.findByUids(tmpuids));
+			List<User> userlist = dao.findByUids(tmpuids);
+			for (User user : userlist) {
+				this.checkLvlttl(user);
+			}
+			ulists.addAll(userlist);
 		}
 		return ulists;
 	}
+
 	public List<User> findUsersByPhones(String[] phones) {
 		List<User> users = dao.findByPhones(phones);
 		for (User user : users) {
@@ -231,8 +239,8 @@ public class UserService extends CrudService<UserDao, User> {
 			}
 		}
 	}
-	
-	public void deleteByUid(Long uid){
+
+	public void deleteByUid(Long uid) {
 		dao.deleteByColumn("id", uid);
 		locationDao.deleteByUid(uid);
 		traceDao.deleteByUid(uid);

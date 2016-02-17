@@ -2,11 +2,17 @@ package com.vidmt.of.plugin.sub.tel;
 
 import java.io.File;
 
+import org.apache.mina.core.session.IdleStatus;
+import org.apache.mina.core.session.IoSession;
+import org.jivesoftware.openfire.Connection;
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.container.Plugin;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.jivesoftware.openfire.event.SessionEventDispatcher;
+import org.jivesoftware.openfire.nio.NIOConnection;
+import org.jivesoftware.openfire.session.LocalClientSession;
 import org.jivesoftware.openfire.session.Session;
+import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +25,7 @@ import com.vidmt.of.plugin.sub.tel.entity.Location;
 import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.LocationService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
+import com.vidmt.of.plugin.utils.ClzUtil;
 import com.vidmt.of.plugin.utils.VerStatUtil;
 
 @AnnoPlugin
@@ -29,6 +36,8 @@ public class TelPlugin extends AbsSessionEventListener implements Plugin {
 	public static final String KEY_RES_PATH = "plugin.vplugin.telplugin.respath";
 	// http://telephone.vidmt.com/TelServer/api/1/pay/{paytype}/notify.json
 	public static final String KEY_PAY_NOTIFY_URL = "plugin.vplugin.telplugin.pay_notify_url";
+
+	public static final String KEY_XMPP_CLIENT_IDLE = "plugin.vplugin.telplugin.xmpp_client_idle";
 
 	private static Logger log = LoggerFactory.getLogger(TelPlugin.class);
 	private XMPPServer server;
@@ -56,6 +65,19 @@ public class TelPlugin extends AbsSessionEventListener implements Plugin {
 		Long uid = Long.valueOf(session.getAddress().getNode());
 		UserService userSvc = SpringContextHolder.getBean(UserService.class);
 		User user = userSvc.load(uid);// 加入cache
+		if (user.getLvl() != null) {
+			try {
+				Connection conn = ((LocalClientSession) session).getConnection();
+				IoSession iosess = (IoSession) ClzUtil.getField(conn, "ioSession");
+				int maxIdle = JiveGlobals.getIntProperty(KEY_XMPP_CLIENT_IDLE, 6 * 60 * 1000) / 1000;
+				int idleTime = maxIdle / 2;
+				if (idleTime > 0) {
+					iosess.getConfig().setIdleTime(IdleStatus.READER_IDLE, idleTime);
+				}
+			} catch (Throwable e) {
+				log.error("修订用户的超时时间出错", e);
+			}
+		}
 
 		Location loc = LocCache.get(uid);
 		if (loc != null) {

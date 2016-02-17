@@ -81,7 +81,6 @@ public class PushInterceptor implements PacketInterceptor {
 	 * <b>send offline msg from this function </b>
 	 */
 	private void doAction(Packet packet, boolean incoming, boolean processed, Session session) {
-		log.debug(">>>>>>>>>begin:pkt:" + packet);
 		String from = packet.getFrom().getNode();
 		if (from == null) {
 			return;
@@ -178,7 +177,8 @@ public class PushInterceptor implements PacketInterceptor {
 		} catch (UserNotFoundException e) {
 			log.error("user not found", e);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("push msg:{}", packet.toXML());
+			log.error("push error", e);
 		}
 		log.debug("<<<<<<<<<<<<<pns end");
 	}

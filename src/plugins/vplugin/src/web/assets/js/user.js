@@ -1,8 +1,8 @@
 jQuery(function($) {
     Handlebars.registerHelper("ifnull", function(value) {
-        if (value) {
-            return value;
-        }
+    	if (value == 0||value) {
+			return value;
+		}
         return " ";
     });
     var PAGE_SIZE = 10;
@@ -24,7 +24,7 @@ jQuery(function($) {
             var phone = $tr.find("td:eq(2)").html().trim();
             var nick = $tr.find("td:eq(3)").html().trim();
             var lvl = $tr.find("td:eq(5)").html().trim();
-            $("#userEditLayer .am-modal-hd").html("用户:" + uid + "/" + phone + "/" + nick);
+            $("#userEditLayer .am-modal-hd").html("用户:[" + uid + "][" + phone + "][" + nick+"]");
             $("#userEditLayer .am-modal-bd .am-modal-prompt-input").val(lvl);
             $("#userEditLayer").modal({
                 relatedTarget: this,
