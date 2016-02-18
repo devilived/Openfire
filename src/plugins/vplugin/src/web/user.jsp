@@ -63,8 +63,8 @@ window.USR_CNT=<%=userCount%>;
 <script src="assets/js/user.js"></script>
 <style type="text/css">
 .avatar {
-	width: 20px;
-	height: 20px;
+	width: 28px;
+	height: 28px;
 }
 
 .presence {
@@ -119,7 +119,7 @@ window.USR_CNT=<%=userCount%>;
 					<script id="user-tpl" type="text/x-handlebars-template">
 					{{#each this}}
   						<tr class="row" data-uid="{{uid}}">
-							<td>{{#if avatar}}<img class="avatar" src="/TelServer{{avatar}}">{{else}}&nbsp;{{/if}}</td>
+							<td>{{#if avatar}}<img class="avatar" src="{{avatar}}">{{else}}&nbsp;{{/if}}</td>
 							<td>{{ifnull uid}}</td>
 							<td>{{ifnull phone}}</td>
 							<td>{{ifnull nick}}</td>

@@ -69,10 +69,12 @@ public class TelPlugin extends AbsSessionEventListener implements Plugin {
 			try {
 				Connection conn = ((LocalClientSession) session).getConnection();
 				IoSession iosess = (IoSession) ClzUtil.getField(conn, "ioSession");
-				int maxIdle = JiveGlobals.getIntProperty(KEY_XMPP_CLIENT_IDLE, 6 * 60 * 1000) / 1000;
-				int idleTime = maxIdle / 2;
-				if (idleTime > 0) {
-					iosess.getConfig().setIdleTime(IdleStatus.READER_IDLE, idleTime);
+				String prop = JiveGlobals.getProperty(KEY_XMPP_CLIENT_IDLE);
+				if (prop != null) {
+					int maxIdle = Integer.parseInt(prop) / 1000;
+					if (maxIdle > 0) {
+						iosess.getConfig().setIdleTime(IdleStatus.READER_IDLE, maxIdle / 2);
+					}
 				}
 			} catch (Throwable e) {
 				log.error("修订用户的超时时间出错", e);

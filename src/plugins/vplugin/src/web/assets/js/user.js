@@ -13,6 +13,12 @@ jQuery(function($) {
     }
 
     function refreshData(data) {
+    	for(var i=0;i<data.length;i++){
+    		var item=data[i];
+    		if(item.avatar){
+    			item.avatar=location.protocol+"//"+location.hostname+"/telephone"+item.avatar;
+    		}
+    	}
         $(".row").remove();
         var html = $("#user-tpl").html();
         var tpl = Handlebars.compile(html);

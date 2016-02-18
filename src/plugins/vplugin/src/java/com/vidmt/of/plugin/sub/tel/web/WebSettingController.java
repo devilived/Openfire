@@ -27,9 +27,7 @@ public class WebSettingController {
 		String[] keys = { KEY_RES_PATH, KEY_PAY_NOTIFY_URL, KEY_XMPP_CLIENT_IDLE };
 		for (String key : keys) {
 			String value = JiveGlobals.getProperty(key);
-			if (value != null) {
-				jarr.add(new KV(key, value));
-			}
+			jarr.add(new KV(key, value));
 		}
 
 		JSONObject json = new JSONObject();
