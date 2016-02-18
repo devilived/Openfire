@@ -36,7 +36,7 @@ public class PlainStrategy implements ReversePwdStrategy {
 	}
 
 	@Override
-	public boolean valid(String plainpwd, String ecryptpwd) {
-		return plainpwd.equals(ecryptpwd);
+	public boolean valid(String plainpwd, String savedPassword) {
+		return plainpwd.equals(savedPassword.split("#")[2]);
 	}
 }

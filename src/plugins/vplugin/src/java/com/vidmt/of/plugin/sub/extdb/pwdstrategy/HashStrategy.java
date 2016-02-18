@@ -32,7 +32,7 @@ public class HashStrategy implements PwdStrategy {
 
 	@Override
 	public boolean valid(String plainpwd, String savedPassword) {
-		return hashPwd(plainpwd, pwdType).equals(savedPassword);
+		return hashPwd(plainpwd, pwdType).equals(savedPassword.split("#")[2]);
 	}
 
 	@Override
