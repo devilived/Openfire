@@ -117,7 +117,8 @@ public class PayController {
 
 	@ResponseBody
 	@RequestMapping("/ali/notify.api")
-	public String alipayNotify(String trade_status, String refund_status, HttpServletRequest req) throws IOException {
+	public String alipayNotify(String trade_no, String trade_status, String refund_status, HttpServletRequest req)
+			throws IOException {
 		// 获取支付宝POST过来反馈信息
 		// 若未通知成功，一般情况下，25小时以内完成 8 次通知（通知的间隔频率一般是：2m,10m,10m,1h,2h,6h,15h）
 		Map<String, String> params = new HashMap<String, String>();
@@ -141,7 +142,7 @@ public class PayController {
 
 		if (AlipayNotify.verify(params)) {// 验证成功
 			if (refund_status == null && !"TRADE_SUCCESS".equals(trade_status)) {
-				log.info("支付宝通知无效,refund_status:{}/trade_status:{}", refund_status, trade_status);
+				log.info("支付宝通知无效,trade_no:{},refund_status:{}/trade_status:{}", trade_no, refund_status, trade_status);
 				return ALI_SUCCESS;
 			}
 			// ////////////////////////////////////////////////////////////////////////////////////////
@@ -167,7 +168,7 @@ public class PayController {
 			}
 			String out_trade_no = params.get("out_trade_no");
 			// 支付宝交易号
-			String trade_no = params.get("trade_no");
+			// String trade_no = params.get("trade_no");
 			// 买家支付宝账号
 			String buyer_email = params.get("buyer_email");
 			// 商品名称
@@ -198,19 +199,19 @@ public class PayController {
 						refundsuccess(order, JSON.toJSONString(params));
 					}
 				} else {
-					log.warn("支付宝通知无效,refund_status:{}", refund_status);
+					log.warn("支付宝通知无效,trade_no:{},refund_status:{}", trade_no, refund_status);
 					VUtil.log(Logtype.ERROR, Acc.ADMIN_UID, uid, "支付宝通知无效,refund_status:" + refund_status);
 				}
 				return ALI_SUCCESS;
 			}
 			String sellerEmail = params.get("seller_email");
 			if (!AlipayConfig.SELELR_ACCOUNT.equals(sellerEmail)) {// 服务器端验证
-				log.warn("支付宝商户EMAIL错误:{}", sellerEmail);
+				log.warn("支付宝商户EMAIL错误:trade_no:{},{}", trade_no, sellerEmail);
 				VUtil.log(Logtype.ERROR, uid, null, "支付宝商户EMAIL错误:" + sellerEmail);
 				return ALI_SUCCESS;
 			}
 			if (!"TRADE_SUCCESS".equals(trade_status)) {
-				log.info("支付宝通知无效,trade_status:{}", trade_status);
+				log.info("支付宝通知无效,trade_no:{},trade_status:{}", trade_no, trade_status);
 				return ALI_SUCCESS;
 			}
 			// 请在这里加上商户的业务逻辑程序代码
@@ -233,6 +234,8 @@ public class PayController {
 				Order oldOrder = orderService.load(out_trade_no);
 				if (oldOrder == null) {
 					paysuccess(order, JSON.toJSONString(params));
+				} else {
+					log.info("支付宝订单已存在!out_trade_no:{},trade_no:{}", out_trade_no, trade_no);
 				}
 				log.debug("alipay success!");
 				return ALI_SUCCESS;
@@ -241,7 +244,7 @@ public class PayController {
 			// ——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 			// ////////////////////////////////////////////////////////////////////////////////////////
 		} else {// 验证失败
-			log.warn("notify fail by verify false!");
+			log.warn("支付宝验证失败!trade_no:{}", trade_no);
 			VUtil.log(Logtype.ERROR, Acc.ADMIN_UID, null, "支付宝验证错误:" + JSON.toJSONString(params));
 			return ALI_FAIL;
 		}
@@ -302,6 +305,8 @@ public class PayController {
 				order.setLvlType(lvlType);
 
 				paysuccess(order, doc.asXML());
+			} else {
+				log.info("微信订单已存在!out_trade_no:{},trade_no:{}", outtradeNO, tradeNo);
 			}
 			log.debug("wxpay success!");
 			return WX_SUCCESS;
