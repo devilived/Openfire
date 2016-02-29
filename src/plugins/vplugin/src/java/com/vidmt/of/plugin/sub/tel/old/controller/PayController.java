@@ -209,7 +209,7 @@ public class PayController {
 				VUtil.log(Logtype.ERROR, uid, null, "支付宝商户EMAIL错误:" + sellerEmail);
 				return ALI_SUCCESS;
 			}
-			if (!"TRADE_SUCCESS".equals(req.getParameter("trade_status"))) {
+			if (!"TRADE_SUCCESS".equals(trade_status)) {
 				log.info("支付宝通知无效,trade_status:{}", trade_status);
 				return ALI_SUCCESS;
 			}

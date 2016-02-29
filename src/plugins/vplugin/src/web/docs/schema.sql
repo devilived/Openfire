@@ -80,7 +80,9 @@ CREATE TABLE `v_paylog` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '会员是否有效(未过期/被升级替换)',
   `content` text,
   PRIMARY KEY (`id`),
-  KEY `uid` (`uid`)
+  KEY `unq_paylog_uid` (`uid`),
+  KEY `idx_paylog_paytime` (`pay_time`),
+  KEY `idx_paylog_payevent` (`pay_event`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='此表只是用来记录支付通知流水，不做他用';
 
 DROP TABLE IF EXISTS  `v_trace`;

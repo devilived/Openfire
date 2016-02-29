@@ -1,5 +1,6 @@
 package com.vidmt.of.plugin.sub.tel.old.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
@@ -14,8 +15,11 @@ public interface PaylogDao extends CrudDao<Paylog> {
 	@Override
 	@Insert("INSERT INTO v_paylog(uid,pay_event,pay_type,pay_acc,total_fee,trade_no,pay_time,content)"
 			+ "VALUES(#{uid},#{payEvent},#{payType},#{payAcc},#{totalFee},#{tradeNo},#{payTime},#{content})")
-	int save(Paylog entity);
-	
-	@Select("SELECT `pay_time` , pay_type, total_fee FROM `v_paylog` WHERE `pay_time` > DATE_ADD(NOW(),INTERVAL -1 MONTH) ORDER BY pay_time ASC")
-	List<Paylog> find1monthAsc();
+	public int save(Paylog entity);
+
+	@Select("SELECT `pay_time` , pay_type, total_fee FROM `v_paylog` WHERE `pay_time` > #{0}")
+	public List<Paylog> findLatest(Date date);
+
+	@Select("SELECT SUM(total_fee) FROM `v_paylog` WHERE `pay_time` > #{0}")
+	public int findTotalFee(Date start);
 }

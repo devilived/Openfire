@@ -13,6 +13,16 @@ public class DateUtil {
 		return cld.get(Calendar.DAY_OF_MONTH);
 	}
 
+	public static Date getDateStart(Date d) {
+		Calendar cld = Calendar.getInstance();
+		cld.setTime(d);
+		cld.set(Calendar.HOUR_OF_DAY, 0);
+		cld.set(Calendar.MINUTE, 0);
+		cld.set(Calendar.SECOND, 0);
+		cld.set(Calendar.MILLISECOND, 0);
+		return cld.getTime();
+	}
+
 	public static boolean sameDay(Date d1, Date d2) {
 		return d1.getTime() / ADAY == d2.getTime() / ADAY;
 	}

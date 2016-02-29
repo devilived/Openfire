@@ -1,6 +1,5 @@
 package com.vidmt.of.plugin.sub.tel.web;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +17,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.sub.tel.entity.Paylog;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
+import com.vidmt.of.plugin.utils.DateUtil;
 import com.vidmt.of.plugin.utils.VerStatUtil;
 
 @Controller
@@ -58,22 +58,18 @@ public class WebStatController {
 	@ResponseBody
 	@RequestMapping("/sys/moneyinfo.*")
 	public JSONObject moneyinfo() {
-		// MoneyStatUtil.main(null);
-		List<Paylog> paylist = paylogService.find1monthAsc();
-
 		ADayInfo[] weekdaySum = new ADayInfo[7];
 		for (int i = 0; i < weekdaySum.length; i++) {
 			weekdaySum[i] = new ADayInfo();
 		}
-		int sumMonth = 0;
 
 		Calendar cld = Calendar.getInstance();
 		Date now = cld.getTime();
 		long aday = 24L * 60 * 60 * 1000;
-		long todayEnd =now.getTime()- now.getTime() % aday+aday;
+		Date todayStart = DateUtil.getDateStart(now);
+		long todayEnd = todayStart.getTime() + aday - 1;
 
-		cld.set(Calendar.DAY_OF_MONTH, 1);
-		long firstDayOfMonth = cld.getTime().getTime()-cld.getTime().getTime() % aday;
+		List<Paylog> paylist = paylogService.findLatest(new Date(todayEnd - 7 * aday));
 
 		for (Paylog paylog : paylist) {
 			long logtime = paylog.getPayTime().getTime();
@@ -91,11 +87,10 @@ public class WebStatController {
 					break;
 				}
 			}
-
-			if (logtime > firstDayOfMonth) {
-				sumMonth += paylog.getTotalFee();
-			}
 		}
+		
+		cld.set(Calendar.DAY_OF_MONTH, 1);
+		int sumMonth = paylogService.findTotalFee(DateUtil.getDateStart(cld.getTime()));
 		JSONObject data = new JSONObject();
 		data.put(KEY_WEEK, weekdaySum);
 		data.put(KEY_SUM_MONTH, sumMonth);
