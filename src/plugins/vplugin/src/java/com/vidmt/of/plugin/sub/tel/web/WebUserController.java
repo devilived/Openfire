@@ -1,10 +1,7 @@
 package com.vidmt.of.plugin.sub.tel.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,46 +28,16 @@ import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.LvlService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
 import com.vidmt.of.plugin.utils.CommUtil;
-import com.vidmt.of.plugin.utils.MoneyStatUtil;
 import com.vidmt.of.plugin.utils.VUtil;
-import com.vidmt.of.plugin.utils.VerStatUtil;
 
 @Controller
 @RequestMapping("/vplugin/api/web")
-public class WebController {
-	private static final Logger log = LoggerFactory.getLogger(WebController.class);
+public class WebUserController {
+	private static final Logger log = LoggerFactory.getLogger(WebUserController.class);
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private LvlService lvlService;
-
-	@ResponseBody
-	@RequestMapping("/sys/verinfo.*")
-	public JSONObject verinfo() {
-		JSONArray jarr = new JSONArray();
-		Map<String, Date> map = VerStatUtil.get();
-		for (Entry<String, Date> entry : map.entrySet()) {
-			JSONObject unit = new JSONObject();
-			unit.put("client", entry.getKey());
-			unit.put("lasttime", entry.getValue());
-			jarr.add(unit);
-		}
-		
-		JSONObject json = new JSONObject();
-		json.put("c", 0);
-		json.put("d", jarr);
-		return json;
-	}
-
-	@ResponseBody
-	@RequestMapping("/sys/moneyinfo.*")
-	public JSONObject moneyinfo() {
-//		MoneyStatUtil.main(null);
-		JSONObject json = new JSONObject();
-		json.put("c", 0);
-		json.put("d", MoneyStatUtil.get());
-		return json;
-	}
 
 	@ResponseBody
 	@RequestMapping("/user/get.*")

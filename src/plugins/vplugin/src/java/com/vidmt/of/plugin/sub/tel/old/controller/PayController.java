@@ -46,7 +46,6 @@ import com.vidmt.of.plugin.sub.tel.pay.AliOrder;
 import com.vidmt.of.plugin.sub.tel.pay.WxOrder;
 import com.vidmt.of.plugin.sub.tel.service.OrderService;
 import com.vidmt.of.plugin.utils.CommUtil;
-import com.vidmt.of.plugin.utils.MoneyStatUtil;
 import com.vidmt.of.plugin.utils.VUtil;
 import com.vidmt.of.plugin.utils.XmlD4jUtil;
 
@@ -336,7 +335,6 @@ public class PayController {
 		paylog.setTradeNo(order.getTradeNo());
 		paylog.setContent(JSON.toJSONString(allparams));
 		paylogService.save(paylog);
-		MoneyStatUtil.put(order.getPayType(), order.getPayTime(), order.getTotalFee());
 	}
 
 	private void refundsuccess(Order order, String allparams) {

@@ -94,9 +94,9 @@ jQuery.noConflict();
 					</thead>
 					<tbody>
 					<script id="money-tpl" type="text/x-handlebars-template">
-					{{#each KEY_STACK}}
+					{{#each KEY_WEEK}}
   						<tr class="row">
-							<td>{{showday ../KEY_DAY_CNT @index}}</td>
+							<td>{{showday @index}}</td>
 							<td>{{cal alimoney '/' 100}}元</td>
 							<td>{{cal wxmoney '/' 100 }}元</td>
 						</tr>
@@ -109,10 +109,6 @@ jQuery.noConflict();
 					<tr class="row">
 						<td>本月总共</td>
 						<td colspan='2'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
-					</tr>
-					<tr class="row">
-						<td>上月总共</td>
-						<td colspan='2'>{{cal KEY_SUM_LASTMONTH '/' 100}}元</td>
 					</tr>
 					</script>
 					</tbody>

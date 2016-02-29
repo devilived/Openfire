@@ -1,20 +1,11 @@
 jQuery(function($) {
-	Handlebars.registerHelper("showday", function(all,idx) {
-		if(idx==0){
-			return "今天";
-		}else if(idx==1){
-			return "昨天";
-		}else if(idx==2){
-			return "前天";
-		}else if(idx==3){
-			return "三天前";
-		}else if(idx==4){
-			return "四天前";
-		}else if(idx==5){
-			return "五天前";
-		}else if(idx==6){
-			return "六天前";
-		}
+	function fmtDate (date) {
+	    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+	}
+	var now=new Date();
+	var aday=24 * 60 * 60 *1000;
+	Handlebars.registerHelper("showday", function(idx) {
+		return fmtDate(new Date(now.valueOf()-idx*aday));
 	});
 	
 	$.get("api/web/sys/verinfo.json").success(function(json) {
@@ -24,18 +15,17 @@ jQuery(function($) {
 	});
 	$.get("api/web/sys/moneyinfo.json").success(function(json) {
 		var data=json.d;
-		if(data&&data.KEY_STACK){
-			data.KEY_STACK.reverse();
+		if(data&&data.KEY_WEEK){
 			var weekaliavg=0;
 			var weekwxavg=0;
-			for(var i=0;i<data.KEY_STACK.length;i++){
-				var item=data.KEY_STACK[i];
+			for(var i=0;i<data.KEY_WEEK.length;i++){
+				var item=data.KEY_WEEK[i];
 				weekaliavg+=item.alimoney;
 				weekwxavg+=item.wxmoney;
 			}
-			data.KEY_WEEK_ALI_AVG=Math.floor(weekaliavg/data.KEY_STACK.length);
-			data.KEY_WEEK_WX_AVG=Math.floor(weekwxavg/data.KEY_STACK.length);
-			data.KEY_DAY_CNT=data.KEY_STACK.length;
+			data.KEY_WEEK_ALI_AVG=Math.floor(weekaliavg/data.KEY_WEEK.length);
+			data.KEY_WEEK_WX_AVG=Math.floor(weekwxavg/data.KEY_WEEK.length);
+//			data.KEY_DAY_CNT=data.KEY_WEEK.length;
 			var html = $("#money-tpl").html();
 			var tpl = Handlebars.compile(html);
 			$("#money-tpl").after(tpl(data));
