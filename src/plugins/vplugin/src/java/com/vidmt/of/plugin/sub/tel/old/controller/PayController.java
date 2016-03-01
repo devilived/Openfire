@@ -142,7 +142,10 @@ public class PayController {
 
 		if (AlipayNotify.verify(params)) {// 验证成功
 			if (refund_status == null && !"TRADE_SUCCESS".equals(trade_status)) {
-				log.info("支付宝通知无效,trade_no:{},refund_status:{}/trade_status:{}", trade_no, refund_status, trade_status);
+				if (!"WAIT_BUYER_PAY".equals(trade_status)) {
+					log.info("支付宝通知无效,trade_no:{},refund_status:{}/trade_status:{}", trade_no, refund_status,
+							trade_status);
+				}
 				return ALI_SUCCESS;
 			}
 			// ////////////////////////////////////////////////////////////////////////////////////////
