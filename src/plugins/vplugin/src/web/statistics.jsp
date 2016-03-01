@@ -90,6 +90,7 @@ jQuery.noConflict();
 							<th>&nbsp;</th>
 							<th>支付宝/天</th>
 							<th>微信/天</th>
+							<th>合计/天</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -99,16 +100,18 @@ jQuery.noConflict();
 							<td>{{showday @index}}</td>
 							<td>{{cal alimoney '/' 100}}元</td>
 							<td>{{cal wxmoney '/' 100 }}元</td>
+							<td>{{cal money '/' 100 }}元</td>
 						</tr>
 					{{/each}}
 					<tr class="row">
 						<td>一周平均</td>
 						<td>{{cal KEY_WEEK_ALI_AVG '/' 100}}元</td>
 						<td>{{cal KEY_WEEK_WX_AVG '/' 100}}元</td>
+						<td>{{cal KEY_WEEK_AVG '/' 100}}元</td>
 					</tr>
 					<tr class="row">
 						<td>本月总共</td>
-						<td colspan='2'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
+						<td colspan='3'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
 					</tr>
 					</script>
 					</tbody>

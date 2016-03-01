@@ -22,9 +22,11 @@ jQuery(function($) {
 				var item=data.KEY_WEEK[i];
 				weekaliavg+=item.alimoney;
 				weekwxavg+=item.wxmoney;
+				item.money=item.alimoney+item.wxmoney;
 			}
 			data.KEY_WEEK_ALI_AVG=Math.floor(weekaliavg/data.KEY_WEEK.length);
 			data.KEY_WEEK_WX_AVG=Math.floor(weekwxavg/data.KEY_WEEK.length);
+			data.KEY_WEEK_AVG=data.KEY_WEEK_ALI_AVG+data.KEY_WEEK_WX_AVG;
 //			data.KEY_DAY_CNT=data.KEY_WEEK.length;
 			var html = $("#money-tpl").html();
 			var tpl = Handlebars.compile(html);

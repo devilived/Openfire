@@ -88,9 +88,12 @@ public class WebStatController {
 				}
 			}
 		}
-		
+
 		cld.set(Calendar.DAY_OF_MONTH, 1);
-		int sumMonth = paylogService.findTotalFee(DateUtil.getDateStart(cld.getTime()));
+		Integer sumMonth = paylogService.findTotalFee(DateUtil.getDateStart(cld.getTime()));
+		if (sumMonth == null) {
+			sumMonth = 0;
+		}
 		JSONObject data = new JSONObject();
 		data.put(KEY_WEEK, weekdaySum);
 		data.put(KEY_SUM_MONTH, sumMonth);

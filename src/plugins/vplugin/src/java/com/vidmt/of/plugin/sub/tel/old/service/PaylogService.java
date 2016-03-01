@@ -17,7 +17,7 @@ public class PaylogService extends CrudService<PaylogDao, Paylog> {
 		return dao.findLatest(date);
 	}
 
-	public int findTotalFee(Date start) {
+	public Integer findTotalFee(Date start) {
 		return dao.findTotalFee(start);
 	}
 }

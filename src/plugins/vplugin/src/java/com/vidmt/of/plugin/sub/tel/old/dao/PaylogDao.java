@@ -21,5 +21,5 @@ public interface PaylogDao extends CrudDao<Paylog> {
 	public List<Paylog> findLatest(Date date);
 
 	@Select("SELECT SUM(total_fee) FROM `v_paylog` WHERE `pay_time` > #{0}")
-	public int findTotalFee(Date start);
+	public Integer findTotalFee(Date start);
 }
