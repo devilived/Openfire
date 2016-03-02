@@ -52,7 +52,11 @@ public class WebStatController {
 	@SuppressWarnings("unused")
 	private static class ADayInfo {
 		public int alimoney;
+		public int alicnt;
 		public int wxmoney;
+		public int wxcnt;
+
+		public int yearcnt;
 	}
 
 	@ResponseBody
@@ -74,14 +78,19 @@ public class WebStatController {
 		for (Paylog paylog : paylist) {
 			long logtime = paylog.getPayTime().getTime();
 			int days = (int) ((todayEnd - logtime) / aday);
-
+			int totalfee = paylog.getTotalFee();
+			if (totalfee == 15000) {
+				weekdaySum[days].yearcnt += 1;
+			}
 			if (days < 7) {
 				switch (paylog.getPayType()) {
 				case ALI:
-					weekdaySum[days].alimoney += paylog.getTotalFee();
+					weekdaySum[days].alimoney += totalfee;
+					weekdaySum[days].alicnt += 1;
 					break;
 				case WX:
-					weekdaySum[days].wxmoney += paylog.getTotalFee();
+					weekdaySum[days].wxmoney += totalfee;
+					weekdaySum[days].wxcnt += 1;
 					break;
 				default:
 					break;
