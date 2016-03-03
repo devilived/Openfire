@@ -17,8 +17,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.sub.tel.entity.Paylog;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
+import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
 import com.vidmt.of.plugin.utils.DateUtil;
-import com.vidmt.of.plugin.utils.VerStatUtil;
 
 @Controller
 @RequestMapping("/vplugin/api/web")
@@ -35,17 +35,22 @@ public class WebStatController {
 	@RequestMapping("/sys/verinfo.*")
 	public JSONObject verinfo() {
 		JSONArray jarr = new JSONArray();
-		Map<String, Date> map = VerStatUtil.get();
+		Map<String, Date> map = VerStatUtil.getLastLoginMap();
 		for (Entry<String, Date> entry : map.entrySet()) {
 			JSONObject unit = new JSONObject();
 			unit.put("client", entry.getKey());
 			unit.put("lasttime", entry.getValue());
 			jarr.add(unit);
 		}
+		JSONObject data = new JSONObject();
+		Map<String, Integer> osCntMap = VerStatUtil.getOsCntMap();
+		data.put("ios", osCntMap.get("i"));
+		data.put("android", osCntMap.get("a"));
+		data.put("lastlogin", jarr);
 
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
-		json.put("d", jarr);
+		json.put("d", data);
 		return json;
 	}
 

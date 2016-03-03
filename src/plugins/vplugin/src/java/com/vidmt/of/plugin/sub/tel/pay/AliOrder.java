@@ -56,7 +56,7 @@ public class AliOrder extends Order {
 		// 取值范围：1m～15d。
 		// m-分钟，h-小时，d-天，1c-当天（无论交易何时创建，都在0点关闭）。
 		// 该参数数值不接受小数点，如1.5h，可转换为90m。
-		json.put("it_b_pay", "30m");
+		json.put("it_b_pay", "1h");
 		// extern_token为经过快登授权获取到的alipay_open_id,带上此参数用户将使用授权的账户进行支付
 		// orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
 

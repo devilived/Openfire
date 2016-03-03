@@ -66,21 +66,22 @@ jQuery.noConflict();
 	<div class="admin-content">
 		<div class="am-g">
 			<div class="am-u-sm-12">
+				<script id="ver-tpl" type="text/x-handlebars-template">
 				<table class="am-table am-table-bd am-table-striped admin-content-table">
-					<caption>客户端版本统计</caption>
+					<caption>客户端版本统计  在线量：[安卓:{{ifnullZero android}} / 苹果:{{ifnullZero ios}}]</caption>
 					<thead><tr><th>客户端</th><th>最后访问日期</th></tr></thead>
 					
 					<tbody>
-					<script id="ver-tpl" type="text/x-handlebars-template">
-					{{#each this}}
+					
+					{{#each lastlogin}}
   						<tr class="row">
 							<td>{{client}}</td>
 							<td>{{lasttime}}</td>
 						</tr>
 					{{/each}}
-					</script>
 					</tbody>
 				</table>
+				</script>
 			</div>
 			
 			<div class="am-u-sm-12">

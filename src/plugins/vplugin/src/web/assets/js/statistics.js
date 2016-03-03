@@ -2,6 +2,14 @@ jQuery(function($) {
 	function fmtDate (date) {
 	    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 	}
+	
+	Handlebars.registerHelper("ifnullZero", function(v) {
+		if (!v) {
+			return 0;
+		}
+		return v;
+	});
+	
 	var now=new Date();
 	var aday=24 * 60 * 60 *1000;
 	Handlebars.registerHelper("showday", function(idx) {

@@ -20,8 +20,8 @@ import com.vidmt.of.plugin.sub.tel.cache.LocCache;
 import com.vidmt.of.plugin.sub.tel.cache.TraceCache;
 import com.vidmt.of.plugin.sub.tel.cache.UserCache;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
+import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
 import com.vidmt.of.plugin.utils.CommUtil;
-import com.vidmt.of.plugin.utils.VerStatUtil;
 
 //@Controller
 @RequestMapping("/vplugin/api/")

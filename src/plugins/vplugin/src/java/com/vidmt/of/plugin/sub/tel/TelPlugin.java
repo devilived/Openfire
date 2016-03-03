@@ -25,8 +25,8 @@ import com.vidmt.of.plugin.sub.tel.entity.Location;
 import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.LocationService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
+import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
 import com.vidmt.of.plugin.utils.ClzUtil;
-import com.vidmt.of.plugin.utils.VerStatUtil;
 
 @AnnoPlugin
 public class TelPlugin extends AbsSessionEventListener implements Plugin {

@@ -227,6 +227,7 @@ public class PayController {
 				// 该种交易状态只在两种情况下出现
 				// 1、开通了普通即时到账，买家付款成功后。
 				// 2、开通了高级即时到账，从该笔交易成功时间算起，过了签约时的可退款时限（如：三个月以内可退款、一年以内可退款等）后。
+				log.info("调试:TRADE_FINISHED:{}", JSON.toJSONString(params));
 				return ALI_SUCCESS;// 此处因为之前已经处理，此处不会执行
 			} else if (trade_status.equals("TRADE_SUCCESS")) {
 				// 判断该笔订单是否在商户网站中已经做过处理
@@ -341,7 +342,7 @@ public class PayController {
 		paylog.setPayTime(order.getPayTime());
 		paylog.setTotalFee(order.getTotalFee());
 		paylog.setTradeNo(order.getTradeNo());
-		paylog.setContent(JSON.toJSONString(allparams));
+		paylog.setContent(allparams);
 		paylogService.save(paylog);
 	}
 
@@ -356,7 +357,7 @@ public class PayController {
 		paylog.setPayTime(order.getPayTime());
 		paylog.setTotalFee(order.getTotalFee());
 		paylog.setTradeNo(order.getTradeNo());
-		paylog.setContent(JSON.toJSONString(allparams));
+		paylog.setContent(allparams);
 		paylogService.save(paylog);
 	}
 }
