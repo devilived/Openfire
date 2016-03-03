@@ -148,16 +148,14 @@ public class CommUtil {
 		return highestBit * highestUnit + laterNum;
 	}
 
+	private static final char[] alpha = "0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
+
 	public static String randString(int len) {
 		char[] dest = new char[len];
 		Random random = new Random();
 		for (int i = 0; i < len; i++) {
 			int r = random.nextInt(36);
-			if (r < 10) {
-				dest[i] = (char) ('0' + r);
-			} else {
-				dest[i] = (char) ('a' + r - 10);
-			}
+			dest[i] = alpha[r];
 		}
 		return new String(dest);
 	}
