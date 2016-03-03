@@ -20,4 +20,8 @@ public class PaylogService extends CrudService<PaylogDao, Paylog> {
 	public Integer findTotalFee(Date start) {
 		return dao.findTotalFee(start);
 	}
+
+	public Paylog findByTradeno(String tradeno) {
+		return dao.findByTradeno(tradeno);
+	}
 }

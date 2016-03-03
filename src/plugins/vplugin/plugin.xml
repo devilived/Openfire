@@ -15,6 +15,7 @@
             <sidebar id="sidebar-vplugin" name="${sidebar.vplugin}">
 				<item id="statistics" name="${item.statistics}" url="statistics.jsp" description="统计信息" />
             	<item id="user" name="${item.user}" url="user.jsp" description="用户信息" />
+				<item id="paylog" name="${item.paylog}" url="paylog.jsp" description="支付信息" />	
 				<item id="setting" name="${item.setting}" url="setting.jsp" description="系统设置" />				
             </sidebar>
         </tab>

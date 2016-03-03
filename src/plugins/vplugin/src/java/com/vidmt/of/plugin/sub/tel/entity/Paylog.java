@@ -18,6 +18,8 @@ public class Paylog extends CrudEntity {
 	private Date payTime;
 	private Date createTime;
 	private String content;
+	
+	private User user;
 
 	public Long getId() {
 		return id;
@@ -97,6 +99,14 @@ public class Paylog extends CrudEntity {
 
 	public void setPayEvent(PayEvent payEvent) {
 		this.payEvent = payEvent;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public static enum PayEvent {

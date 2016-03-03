@@ -82,7 +82,8 @@ CREATE TABLE `v_paylog` (
   PRIMARY KEY (`id`),
   KEY `unq_paylog_uid` (`uid`),
   KEY `idx_paylog_paytime` (`pay_time`),
-  KEY `idx_paylog_payevent` (`pay_event`) USING HASH
+  KEY `idx_paylog_payevent` (`pay_event`) USING HASH,
+  KEY `idx_paylog_tradeno` (`trade_no`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='此表只是用来记录支付通知流水，不做他用';
 
 DROP TABLE IF EXISTS  `v_trace`;

@@ -21,6 +21,7 @@ import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
 import com.vidmt.of.plugin.utils.DateUtil;
 
 @Controller
+@ResponseBody
 @RequestMapping("/vplugin/api/web")
 public class WebStatController {
 	private static final Logger log = LoggerFactory.getLogger(WebStatController.class);
@@ -31,7 +32,6 @@ public class WebStatController {
 	@Autowired
 	private PaylogService paylogService;
 
-	@ResponseBody
 	@RequestMapping("/sys/verinfo.*")
 	public JSONObject verinfo() {
 		JSONArray jarr = new JSONArray();
@@ -64,7 +64,6 @@ public class WebStatController {
 		public int yearcnt;
 	}
 
-	@ResponseBody
 	@RequestMapping("/sys/moneyinfo.*")
 	public JSONObject moneyinfo() {
 		ADayInfo[] weekdaySum = new ADayInfo[7];

@@ -19,8 +19,8 @@
 
 <html>
 <head>
-<title><fmt:message key="item.user" /></title>
-<meta name="pageID" content="user" />
+<title><fmt:message key="item.paylog" /></title>
+<meta name="pageID" content="paylog" />
 <%-- ========================================================= --%>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,9 +57,8 @@
 <%-- ============================================================================= --%>
 <script>
 jQuery.noConflict();
-window.USR_CNT=<%=userCount%>;
 </script>
-<script src="assets/js/user.js"></script>
+<script src="assets/js/paylog.js"></script>
 <style type="text/css">
 .avatar {
 	width: 28px;
@@ -79,21 +78,9 @@ window.USR_CNT=<%=userCount%>;
 <body>
 	<div class="admin-content">
 		<div class="am-g">
-			<div class="am-u-sm-12 am-u-md-7">
-				<ul class="am-pagination"></ul>
-			</div>
-			<div class="am-u-sm-12 am-u-md-2">
-				<div class="am-form-group">
-					<select name="acctype" data-am-selected="{btnWidth: '100%',btnSize: 'sm'}">
-						<option value="none">请选择...</option>
-						<option value="uid">uid</option>
-						<option value="phone">手机号</option>
-					</select>
-				</div>
-			</div>
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input name="accvalue" type="text" class="am-form-field" />
+					<input name="tradeno" type="text" placeholder="支付交易号" class="am-form-field" />
 					<span class="am-input-group-btn"><button class="am-btn am-btn-default" type="button" id="search">搜索</button></span>
 				</div>
 			</div>
@@ -104,43 +91,30 @@ window.USR_CNT=<%=userCount%>;
 					class="am-table am-table-bd am-table-striped admin-content-table">
 					<thead>
 						<tr>
-							<th>头像</th>
 							<th>UID</th>
 							<th>手机号</th>
 							<th>昵称</th>
-							<th>在线状态</th>
 							<th>会员等级</th>
 							<th>到期日期</th>
-							<th>管理</th>
+							<th>订单号</th>
+							<th>类型</th>
+							<th>时间</th>
+							<th>金额</th>
 						</tr>
 					</thead>
 					<tbody>
 					<script id="user-tpl" type="text/x-handlebars-template">
-					{{#each this}}
   						<tr class="row" data-uid="{{uid}}">
-							<td>{{#if avatar}}<img class="avatar" src="{{avatar}}">{{else}}&nbsp;{{/if}}</td>
 							<td>{{ifnull uid}}</td>
-							<td>{{ifnull phone}}</td>
-							<td>{{ifnull nick}}</td>
-							{{#unless presence}}<td><img class="presence" src="/images/user-clear-16x16.gif"/></td>{{/unless}}
-							{{#compare presence '==' 'available'}}<td><img class="presence" src="/images/user-green-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'chat'}}<td><img class="presence" src="/images/user-green-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'away'}}<td><img class="presence" src="/images/user-yellow-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'xa'}}<td><img class="presence" src="/images/user-yellow-16x16.gif"/></td>{{/compare}}
-							{{#compare presence '==' 'dnd'}}<td><img class="presence" src="/images/user-red-16x16.gif"/></td>{{/compare}}
-
-							<td>{{ifnull lvl}}</td>
-							<td>{{ifnull endTime}}</td>
-							<td>
-								<div class="am-btn-toolbar">
-								  <div class="am-btn-group am-btn-group-xs">
-									<button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-									<button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-trash-o"></span> 删除</button>
-								  </div>
-								</div>
-							</td>
+							<td>{{ifnull user.phone}}</td>
+							<td>{{ifnull user.nick}}</td>
+							<td>{{ifnull user.lvl}}</td>
+							<td>{{ifnull user.lvlEnd}}</td>
+							<td>{{ifnull tradeNo}}</td>
+							<td>{{ifnull payType}}</td>
+							<td>{{ifnull payTime}}</td>
+							<td>{{cal totalFee '/' 100 }}元</td>
 						</tr>
-					{{/each}}
 					</script>
 					</tbody>
 				</table>
