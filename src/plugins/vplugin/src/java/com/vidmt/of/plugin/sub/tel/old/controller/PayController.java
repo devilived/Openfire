@@ -80,7 +80,10 @@ public class PayController {
 		order.setLvlType(lvlType);
 		// order.setPayType(PayType.ALI);
 		order.setStatus(OrderStatus.INIT);
-		order.setSubject(Order.genSubject(lvl));
+		
+		String prefix=String.format("uid[%s]oid[%s]", uid,order.getId());
+		order.setSubject(prefix+Order.genSubject(lvl));
+		
 		order.setTotalFee(debug ? 1 : lvl.getMoney());
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
@@ -109,7 +112,8 @@ public class PayController {
 		order.setLvlType(lvlType);
 		order.setStatus(OrderStatus.INIT);
 		// order.setPayType(PayType.WX);
-		order.setSubject(Order.genSubject(lvl));
+		String prefix=String.format("uid[%s]oid[%s]", uid,order.getId());
+		order.setSubject(prefix+Order.genSubject(lvl));
 		order.setTotalFee(debug ? 1 : lvl.getMoney());
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
