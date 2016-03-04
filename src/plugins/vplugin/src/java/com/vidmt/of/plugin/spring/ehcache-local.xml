@@ -13,11 +13,11 @@
 	<cache name="sysCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
 	
 	<!-- 位置缓存，2小时内，如果没有访问，会写入数据库 -->	
-	<cache name="locCache" maxEntriesLocalHeap="2000" eternal="false" timeToIdleSeconds="7200" overflowToDisk="true">
+	<cache name="locCache" maxEntriesLocalHeap="5000" eternal="false" timeToIdleSeconds="7200" overflowToDisk="true">
 		<cacheEventListenerFactory class="com.vidmt.of.plugin.sub.tel.cache.LocCache$MyCacheEventListenerFactory"/>
 	</cache>
 	<!-- 足迹缓存，30分钟内，如果没有访问，会写入数据库 -->	
-	<cache name="traceCache" maxEntriesLocalHeap="2000" eternal="false" timeToIdleSeconds="1800" overflowToDisk="true">
+	<cache name="traceCache" maxEntriesLocalHeap="5000" eternal="false" timeToIdleSeconds="1800" overflowToDisk="true">
 		<cacheEventListenerFactory class="com.vidmt.of.plugin.sub.tel.cache.TraceCache$MyCacheEventListenerFactory"/>
 	</cache>
 	
