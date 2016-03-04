@@ -91,6 +91,7 @@ public class TelPlugin extends AbsSessionEventListener implements Plugin {
 
 	@Override
 	public void sessionDestroyed(Session session) {
+		VerStatUtil.remove(session.getAddress().getResource());
 		Long uid = Long.valueOf(session.getAddress().getNode());
 		UserService userSvc = SpringContextHolder.getBean(UserService.class);
 		User user = userSvc.load(uid);// 加入cache

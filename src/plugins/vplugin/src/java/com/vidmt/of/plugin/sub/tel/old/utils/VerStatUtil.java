@@ -20,7 +20,7 @@ public class VerStatUtil {
 		}
 	}
 
-	public void remove(String resource) {
+	public static void remove(String resource) {
 		String[] arr = resource.split("-");
 		if (arr.length > 2) {
 			String os = arr[1];
