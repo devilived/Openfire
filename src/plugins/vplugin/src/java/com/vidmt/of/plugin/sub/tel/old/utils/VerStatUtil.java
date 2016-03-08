@@ -17,6 +17,8 @@ public class VerStatUtil {
 
 			String key = arr[1] + "-" + arr[2];
 			lastLoginMap.put(key, new Date());
+		}else{
+			lastLoginMap.put(resource, new Date());
 		}
 	}
 

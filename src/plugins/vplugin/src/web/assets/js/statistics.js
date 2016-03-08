@@ -51,7 +51,7 @@ jQuery(function($) {
 				
 				weekalicnt+=item.alicnt;
 				weekwxcnt+=item.wxcnt;
-				item.cnt=weekalicnt+weekwxcnt;
+				item.cnt=item.alicnt+item.wxcnt;
 				
 				yearcntsum+=item.yearcnt;
 			}
