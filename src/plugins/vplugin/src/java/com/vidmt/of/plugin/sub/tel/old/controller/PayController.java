@@ -96,7 +96,7 @@ public class PayController {
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("m", AlipayUtil.toParamString(list));
-		log.info("ALI INFO:{}",json.toJSONString());
+//		log.info("ALI INFO:{}",json.toJSONString());
 		return json;
 	}
 
@@ -118,7 +118,7 @@ public class PayController {
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
 		JSONObject json = order.toPayinfo();
-		log.info("WX  INFO:{}",json.toJSONString());
+//		log.info("WX  INFO:{}",json.toJSONString());
 		return json;
 	}
 
@@ -146,7 +146,7 @@ public class PayController {
 		// String out_trade_no = new
 		// String(req.getParameter("out_trade_no").getBytes("ISO-8859-1"),
 		// "UTF-8");
-		log.info("ALI RCV:{}",JSON.toJSONString(params));
+//		log.info("ALI RCV:{}",JSON.toJSONString(params));
 
 		if (AlipayNotify.verify(params)) {// 验证成功
 			if (refund_status == null && !"TRADE_SUCCESS".equals(trade_status)) {
@@ -269,7 +269,7 @@ public class PayController {
 		try {
 			Document doc = XmlD4jUtil.getXmlDoc(new InputStreamReader(req.getInputStream(), "UTF-8"));
 			Map<String, String> notifyMap = WxPayUtil.readXml(doc);
-			log.info("WX  RCV:{}",JSON.toJSONString(notifyMap));
+//			log.info("WX  RCV:{}",JSON.toJSONString(notifyMap));
 			
 			if (!"SUCCESS".equals(notifyMap.get("return_code")) || !"SUCCESS".equals(notifyMap.get("result_code"))) {
 				log.warn("微信支付通知无效：" + JSON.toJSONString(notifyMap));
