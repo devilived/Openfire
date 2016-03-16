@@ -66,7 +66,7 @@ public class WebStatController {
 
 	@RequestMapping("/sys/moneyinfo.*")
 	public JSONObject moneyinfo() {
-		ADayInfo[] weekdaySum = new ADayInfo[7];
+		ADayInfo[] weekdaySum = new ADayInfo[8];
 		for (int i = 0; i < weekdaySum.length; i++) {
 			weekdaySum[i] = new ADayInfo();
 		}
@@ -77,7 +77,7 @@ public class WebStatController {
 		Date todayStart = DateUtil.getDateStart(now);
 		long todayEnd = todayStart.getTime() + aday - 1;
 
-		List<Paylog> paylist = paylogService.findLatest(new Date(todayEnd - 7 * aday));
+		List<Paylog> paylist = paylogService.findLatest(new Date(todayEnd - 8 * aday));
 
 		for (Paylog paylog : paylist) {
 			long logtime = paylog.getPayTime().getTime();
@@ -86,7 +86,7 @@ public class WebStatController {
 			if (totalfee == 15000) {
 				weekdaySum[days].yearcnt += 1;
 			}
-			if (days < 7) {
+			if (days < 8) {
 				switch (paylog.getPayType()) {
 				case ALI:
 					weekdaySum[days].alimoney += totalfee;

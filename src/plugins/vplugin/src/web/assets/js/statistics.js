@@ -45,19 +45,22 @@ jQuery(function($) {
 			
 			for(var i=0;i<data.KEY_WEEK.length;i++){
 				var item=data.KEY_WEEK[i];
-				weekalisum+=item.alimoney;
-				weekwxsum+=item.wxmoney;
-				item.money=item.alimoney+item.wxmoney;
+				if(i>0){
+					weekalisum+=item.alimoney;
+					weekwxsum+=item.wxmoney;
+					
+					weekalicnt+=item.alicnt;
+					weekwxcnt+=item.wxcnt;
+				}
 				
-				weekalicnt+=item.alicnt;
-				weekwxcnt+=item.wxcnt;
+				item.money=item.alimoney+item.wxmoney;
 				item.cnt=item.alicnt+item.wxcnt;
 				
 				yearcntsum+=item.yearcnt;
 			}
-			data.KEY_WEEK_ALI_AVG=Math.floor(weekalisum/data.KEY_WEEK.length);
+			data.KEY_WEEK_ALI_AVG=Math.floor(weekalisum/7);
 			data.KEY_WEEK_ALI_CNT=weekalicnt;
-			data.KEY_WEEK_WX_AVG=Math.floor(weekwxsum/data.KEY_WEEK.length);
+			data.KEY_WEEK_WX_AVG=Math.floor(weekwxsum/7);
 			data.KEY_WEEK_WX_CNT=weekwxcnt;
 			data.KEY_WEEK_AVG=data.KEY_WEEK_ALI_AVG+data.KEY_WEEK_WX_AVG;
 			
