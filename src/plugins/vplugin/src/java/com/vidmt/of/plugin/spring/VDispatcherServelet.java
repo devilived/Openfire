@@ -68,10 +68,11 @@ public class VDispatcherServelet extends DispatcherServlet {
 		super.service(req, resp);
 		long end = System.currentTimeMillis();
 		long timesec = (end - start) / 1000;
+		String url=req.getQueryString()!=null?req.getRequestURI():req.getRequestURI() + "?" + req.getQueryString();
 		if (timesec > 5) {
-			statlog.warn("执行时间超过5秒,为{}秒：{}", timesec, req.getRequestURI() + "?" + req.getQueryString());
+			statlog.warn("执行时间超过5秒,为{}秒：{}", timesec, url);
 		} else {
-			statlog.debug("执行时间{}秒：{}", timesec, req.getRequestURI() + "?" + req.getQueryString());
+			statlog.debug("执行时间{}秒：{}", timesec, url);
 		}
 		Thread.currentThread().setContextClassLoader(oldcl);
 	}

@@ -14,6 +14,8 @@ import org.jivesoftware.openfire.container.PluginClassLoader;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.io.Resource;
 
 import com.vidmt.of.plugin.spring.beans.SpringContextHolder;
@@ -107,6 +109,13 @@ public class VPlugin implements Plugin {
 			}
 			subPlugins = null;
 		}
+
+		ApplicationContext ctx = SpringContextHolder.getApplicationContext();
+		if (ctx instanceof AbstractApplicationContext) {
+			((AbstractApplicationContext) ctx).close();
+			log.debug("清空spring");
+		}
+		SpringContextHolder.clearHolder();
 	}
 
 	public static void runAsyc(Runnable r) {

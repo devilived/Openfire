@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import com.vidmt.of.plugin.spring.CacheUtil;
 import com.vidmt.of.plugin.sub.tel.entity.User;
+
 /**
  * 非持久
+ * 
  * @author xingqisheng
  */
 public class UserCache {
@@ -24,5 +26,9 @@ public class UserCache {
 
 	public static void remove(Long uid) {
 		CacheUtil.remove(CACHE_NAME, PRE_UID_ + uid);
+	}
+
+	public static void clear() {
+		
 	}
 }
