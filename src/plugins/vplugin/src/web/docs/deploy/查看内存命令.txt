@@ -1,0 +1,2 @@
+jmap -dump:format=b,file=heap.bin ·pggrep java·
+jhat -J-Xmx512m heap.bin

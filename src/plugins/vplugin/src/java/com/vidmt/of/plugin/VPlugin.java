@@ -2,8 +2,6 @@ package com.vidmt.of.plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,11 +12,7 @@ import org.jivesoftware.openfire.container.PluginClassLoader;
 import org.jivesoftware.openfire.container.PluginManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.core.io.Resource;
 
-import com.vidmt.of.plugin.spring.beans.SpringContextHolder;
 import com.vidmt.of.plugin.utils.PkgUtil;
 
 public class VPlugin implements Plugin {
@@ -109,13 +103,11 @@ public class VPlugin implements Plugin {
 			}
 			subPlugins = null;
 		}
-
-		ApplicationContext ctx = SpringContextHolder.getApplicationContext();
-		if (ctx instanceof AbstractApplicationContext) {
-			((AbstractApplicationContext) ctx).close();
-			log.debug("清空spring");
+		try {
+			VClassLoader.get().close();
+		} catch (IOException e) {
+			log.error("关闭VClassLoader中的jar出错", e);
 		}
-		SpringContextHolder.clearHolder();
 	}
 
 	public static void runAsyc(Runnable r) {
