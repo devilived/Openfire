@@ -24,4 +24,8 @@ public class PaylogService extends CrudService<PaylogDao, Paylog> {
 	public Paylog findByTradeno(String tradeno) {
 		return dao.findByTradeno(tradeno);
 	}
+
+	public List<Paylog> findByPhone(String phone) {
+		return dao.findByPhone(phone);
+	}
 }

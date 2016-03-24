@@ -36,7 +36,7 @@ public final class User extends CrudEntity {
 	private LvlType lvl;
 	private transient Long lvlttl;// 单位:秒
 
-	@JSONField(serialize = false)
+//	@JSONField(serialize = false)
 	private Date lvlEnd;
 	@JSONField(serialize = false)
 	private String rawpwd;

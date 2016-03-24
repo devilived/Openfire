@@ -6,8 +6,17 @@ jQuery(function($) {
         return " ";
     });
     $("#search").click(function() {
-        var tradeno = $("[name='tradeno']").val();
-        var url = 'api/web/paylog/list.json?tradeno=' + tradeno;;
+    	  var querytype = $("[name='querytype']").val();
+          var queryvalue = $("[name='queryvalue']").val();
+          var url = '';
+          if (querytype == 'tno') {
+              url = 'api/web/paylog/list.json?tno=' + queryvalue;
+          } else if (querytype == 'phone') {
+              url = 'api/web/paylog/list.json?phone=' + queryvalue;
+          } else {
+              url = 'api/web/paylog/list.json?phone=' + queryvalue;
+          }
+          
         $.get(url).success(function(json) {
             $(".row").remove();
             var html = $("#user-tpl").html();

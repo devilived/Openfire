@@ -17,9 +17,13 @@ public interface PaylogDao extends CrudDao<Paylog> {
 			+ "VALUES(#{uid},#{payEvent},#{payType},#{payAcc},#{totalFee},#{tradeNo},#{payTime},#{content})")
 	public int save(Paylog entity);
 	
-	@Select("SELECT pay.uid,phone AS 'user.phone',nick AS 'user.nick',lvl AS 'user.lvl',lvl_end AS 'user.lvl_end',pay_type,total_fee,trade_no,pay_event,pay_time FROM v_paylog pay LEFT JOIN v_user usr ON pay.uid=usr.id  WHERE trade_no=#{0}")
+	@Select("SELECT pay.uid,phone AS 'user.phone',nick AS 'user.nick',lvl AS 'user.lvl',lvl_end AS 'user.lvlEnd',pay_type,total_fee,trade_no,pay_event,pay_time FROM v_paylog pay LEFT JOIN v_user usr ON pay.uid=usr.id  WHERE trade_no=#{0}")
 	public Paylog findByTradeno(String tradeno);
 
+	@Select("SELECT pay.uid,phone AS 'user.phone',nick AS 'user.nick',lvl AS 'user.lvl',lvl_end AS 'user.lvlEnd',pay_type,total_fee,trade_no,pay_event,pay_time FROM v_paylog pay LEFT JOIN v_user usr ON pay.uid=usr.id  WHERE usr.phone=#{0}")
+	public List<Paylog> findByPhone(String phone);
+
+	
 	@Select("SELECT `pay_time` , pay_type, total_fee FROM `v_paylog` WHERE `pay_time` > #{0}")
 	public List<Paylog> findLatest(Date date);
 

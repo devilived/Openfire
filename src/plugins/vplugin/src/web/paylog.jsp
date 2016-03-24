@@ -78,9 +78,18 @@ jQuery.noConflict();
 <body>
 	<div class="admin-content">
 		<div class="am-g">
+			<div class="am-u-sm-12 am-u-md-2">
+				<div class="am-form-group">
+					<select name="querytype" data-am-selected="{btnWidth: '100%',btnSize: 'sm'}">
+						<option value="none">请选择...</option>
+						<option value="tno">交易订单号</option>
+						<option value="phone">手机号</option>
+					</select>
+				</div>
+			</div>
 			<div class="am-u-sm-12 am-u-md-3">
 				<div class="am-input-group am-input-group-sm">
-					<input name="tradeno" type="text" placeholder="支付交易号" class="am-form-field" />
+					<input name="queryvalue" type="text" placeholder="支付交易号或手机号" class="am-form-field" />
 					<span class="am-input-group-btn"><button class="am-btn am-btn-default" type="button" id="search">搜索</button></span>
 				</div>
 			</div>
@@ -104,6 +113,7 @@ jQuery.noConflict();
 					</thead>
 					<tbody>
 					<script id="user-tpl" type="text/x-handlebars-template">
+						{{#each this}}
   						<tr class="row" data-uid="{{uid}}">
 							<td>{{ifnull uid}}</td>
 							<td>{{ifnull user.phone}}</td>
@@ -115,6 +125,7 @@ jQuery.noConflict();
 							<td>{{ifnull payTime}}</td>
 							<td>{{cal totalFee '/' 100 }}元</td>
 						</tr>
+						{{/each}}
 					</script>
 					</tbody>
 				</table>
