@@ -153,6 +153,6 @@ public class Order extends CrudEntity {
 	}
 
 	public static enum PayType {
-		WX, ALI, MM
+		WX, ALI, MM, IAP
 	}
 }

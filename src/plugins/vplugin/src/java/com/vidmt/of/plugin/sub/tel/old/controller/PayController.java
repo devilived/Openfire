@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.vidmt.of.plugin.exceptoins.CodeException;
 import com.vidmt.of.plugin.sub.extdb.Acc;
 import com.vidmt.of.plugin.sub.tel.entity.Lvl;
 import com.vidmt.of.plugin.sub.tel.entity.Lvl.LvlType;
@@ -37,12 +37,14 @@ import com.vidmt.of.plugin.sub.tel.entity.SysLog.Logtype;
 import com.vidmt.of.plugin.sub.tel.old.pay.alipay.AlipayConfig;
 import com.vidmt.of.plugin.sub.tel.old.pay.alipay.AlipayNotify;
 import com.vidmt.of.plugin.sub.tel.old.pay.alipay.AlipayUtil;
+import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxHttps;
 import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxPayConfig;
 import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxPayUtil;
 import com.vidmt.of.plugin.sub.tel.old.service.LvlService;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
 import com.vidmt.of.plugin.sub.tel.pay.AliOrder;
+import com.vidmt.of.plugin.sub.tel.pay.IapOrder;
 import com.vidmt.of.plugin.sub.tel.pay.WxOrder;
 import com.vidmt.of.plugin.sub.tel.service.OrderService;
 import com.vidmt.of.plugin.utils.CommUtil;
@@ -70,8 +72,7 @@ public class PayController {
 
 	@ResponseBody
 	@RequestMapping("/alipay/getPayInfo.*")
-	public JSONObject getAlipayOrderInfo(String vipType, boolean debug, HttpServletRequest req,
-			HttpServletResponse resp) {
+	public JSONObject getAlipayOrderInfo(String vipType, boolean debug, HttpServletRequest req) {
 		Long uid = (Long) req.getAttribute("uid");
 		LvlType lvlType = LvlType.valueOf(vipType);
 		Lvl lvl = lvlService.getLvlByType(lvlType);
@@ -80,10 +81,10 @@ public class PayController {
 		order.setLvlType(lvlType);
 		// order.setPayType(PayType.ALI);
 		order.setStatus(OrderStatus.INIT);
-		
-		String prefix=String.format("%s%s", uid,order.getId());
-		order.setSubject(Order.genSubject(lvl)+prefix);
-		
+
+		String prefix = String.format("%s%s", uid, order.getId());
+		order.setSubject(Order.genSubject(lvl) + prefix);
+
 		order.setTotalFee(debug ? 1 : lvl.getMoney());
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
@@ -96,14 +97,13 @@ public class PayController {
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("m", AlipayUtil.toParamString(list));
-//		log.info("ALI INFO:{}",json.toJSONString());
+		// log.info("ALI INFO:{}",json.toJSONString());
 		return json;
 	}
 
 	@ResponseBody
 	@RequestMapping("/wxpay/getPayInfo.*")
-	public JSONObject getWxpayOrderInfo(final String vipType, boolean debug, HttpServletRequest req,
-			HttpServletResponse resp) {
+	public JSONObject getWxpayOrderInfo(final String vipType, boolean debug, HttpServletRequest req) {
 		Long uid = (Long) req.getAttribute("uid");
 		LvlType lvlType = LvlType.valueOf(vipType);
 		Lvl lvl = lvlService.getLvlByType(lvlType);
@@ -112,13 +112,40 @@ public class PayController {
 		order.setLvlType(lvlType);
 		order.setStatus(OrderStatus.INIT);
 		// order.setPayType(PayType.WX);
-		String prefix=String.format("%s%s", uid,order.getId());
-		order.setSubject(Order.genSubject(lvl)+prefix);
+		String prefix = String.format("%s%s", uid, order.getId());
+		order.setSubject(Order.genSubject(lvl) + prefix);
 		order.setTotalFee(debug ? 1 : lvl.getMoney());
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
 		JSONObject json = order.toPayinfo();
-//		log.info("WX  INFO:{}",json.toJSONString());
+		// log.info("WX INFO:{}",json.toJSONString());
+		return json;
+	}
+
+	@ResponseBody
+	@RequestMapping("/iappay/getPayInfo.*")
+	public JSONObject getAppayOrderInfo(String vipType, boolean debug, HttpServletRequest req) {
+		Long uid = (Long) req.getAttribute("uid");
+		LvlType lvlType = LvlType.valueOf(vipType);
+
+		IapOrder order = new IapOrder();
+		order.setId(Order.genId());
+		order.setLvlType(lvlType);
+		// order.setPayType(PayType.ALI);
+		order.setStatus(OrderStatus.INIT);
+
+		String prefix = String.format("%s%s", uid, order.getId());
+		Lvl lvl = lvlService.getLvlByType(lvlType);
+		order.setSubject(Order.genSubject(lvl) + prefix);
+
+		order.setTotalFee(debug ? 1 : (lvlType == LvlType.TRY ? 12 * 100 : 158 * 100));
+		order.setUid(uid);
+		order.setAttach(uid + "-" + lvlType.name());
+
+		JSONObject json = order.toPayinfo();
+		json.put("c", 0);
+		json.put("d", order.toPayinfo());
+		// log.info("WX INFO:{}",json.toJSONString());
 		return json;
 	}
 
@@ -146,7 +173,7 @@ public class PayController {
 		// String out_trade_no = new
 		// String(req.getParameter("out_trade_no").getBytes("ISO-8859-1"),
 		// "UTF-8");
-//		log.info("ALI RCV:{}",JSON.toJSONString(params));
+		// log.info("ALI RCV:{}",JSON.toJSONString(params));
 
 		if (AlipayNotify.verify(params)) {// 验证成功
 			if (refund_status == null && !"TRADE_SUCCESS".equals(trade_status)) {
@@ -222,7 +249,9 @@ public class PayController {
 				return ALI_SUCCESS;
 			}
 			if (!"TRADE_SUCCESS".equals(trade_status)) {
-				log.info("支付宝通知无效,trade_no:{},trade_status:{}", trade_no, trade_status);
+				if (!"TRADE_FINISHED".equals(trade_status)) {
+					log.info("支付宝通知无效,trade_no:{},trade_status:{}", trade_no, trade_status);
+				}
 				return ALI_SUCCESS;
 			}
 			// 请在这里加上商户的业务逻辑程序代码
@@ -269,8 +298,8 @@ public class PayController {
 		try {
 			Document doc = XmlD4jUtil.getXmlDoc(new InputStreamReader(req.getInputStream(), "UTF-8"));
 			Map<String, String> notifyMap = WxPayUtil.readXml(doc);
-//			log.info("WX  RCV:{}",JSON.toJSONString(notifyMap));
-			
+			// log.info("WX RCV:{}",JSON.toJSONString(notifyMap));
+
 			if (!"SUCCESS".equals(notifyMap.get("return_code")) || !"SUCCESS".equals(notifyMap.get("result_code"))) {
 				log.warn("微信支付通知无效：" + JSON.toJSONString(notifyMap));
 				return WX_FAIL;
@@ -329,6 +358,73 @@ public class PayController {
 			VUtil.log(Logtype.ERROR, Acc.ADMIN_UID, null, "微信支付失败未知原因:" + CommUtil.fmtException(e));
 			return WX_FAIL;
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping("/iap/notify.api")
+	public JSONObject apPayNotify(long uid, String out_trade_no, String trade_no, LvlType lvltype, String receipt,
+			Boolean isSandebox, Date paytime) {
+		Order oldOrder = orderService.load(out_trade_no);
+		if (oldOrder == null) {
+			boolean valid = true;
+			if (receipt != null) {
+				try {
+					JSONObject entityJson = new JSONObject();
+					entityJson.put("receipt-data", receipt);
+					String url = (isSandebox ? "https://sandbox.itunes.apple.com/verifyReceipt"
+							: "https://buy.itunes.apple.com/verifyReceipt");
+					byte[] respbyte = WxHttps.httpPost(url, entityJson.toJSONString());
+					if (respbyte == null) {
+						throw new IOException("访问IOS服务器失败");
+					}
+					String content = CommUtil.newString(respbyte, "utf-8");
+					JSONObject respJson = JSON.parseObject(content);
+					int status = respJson.getIntValue("status");
+					if (status == 21007) {
+						valid = false;
+						log.error("正式服务器的结果验证发送到IOS测试服务器上导致出错");
+					} else if (status != 0) {
+						valid = false;
+						log.error("IOS服务器验证出错：{}", content);
+					}
+				} catch (Throwable e) {
+					log.warn("IAP服务器访问出错", e);
+				}
+			}
+
+			if (!valid) {
+				JSONObject json = new JSONObject();
+				json.put("c", CodeException.ERR_UNKOWN);
+				return json;
+			}
+			Order order = new Order();
+			order.setId(out_trade_no);
+			order.setUid(uid);
+
+			String prefix = String.format("%s%s", uid, order.getId());
+			Lvl lvl = lvlService.getLvlByType(lvltype);
+			order.setSubject(Order.genSubject(lvl) + prefix);
+			order.setTotalFee(lvltype == LvlType.TRY ? 12 * 100 : 158 * 100);
+			order.setPayType(PayType.IAP);
+			order.setTradeNo(trade_no);
+			order.setPayTime(paytime);
+			order.setStatus(OrderStatus.PAYED);
+			order.setAttach(uid + "-" + lvltype.name());
+			order.setLvlType(lvltype);
+
+			JSONObject json = new JSONObject();
+			json.put("uid", uid);
+			json.put("out_trade_no", out_trade_no);
+			json.put("lvltype", lvltype);
+
+			paysuccess(order, json.toJSONString());
+		}
+
+		JSONObject json = new JSONObject();
+		json.put("c", 0);
+		json.put("m", "OK");
+		return json;
+
 	}
 
 	private void paysuccess(Order order, String allparams) {
