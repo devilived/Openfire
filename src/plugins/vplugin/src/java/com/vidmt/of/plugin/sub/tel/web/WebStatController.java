@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.sub.tel.entity.Paylog;
+import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
+import com.vidmt.of.plugin.sub.tel.old.utils.UserStatUtil;
 import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
 import com.vidmt.of.plugin.utils.DateUtil;
 
@@ -32,6 +34,21 @@ public class WebStatController {
 	@Autowired
 	private PaylogService paylogService;
 
+	@RequestMapping("/sys/last10info.*")
+	public JSONObject last10info() {
+		JSONObject json = new JSONObject();
+		json.put("c", 0);
+		json.put("d", UserStatUtil.getLast10Stat());
+		return json;
+	}
+	@RequestMapping("/sys/reghourinfo.*")
+	public JSONObject reghourinfo() {
+		JSONObject json = new JSONObject();
+		json.put("c", 0);
+		json.put("d", UserStatUtil.getHourCntStat());
+		return json;
+	}
+	
 	@RequestMapping("/sys/verinfo.*")
 	public JSONObject verinfo() {
 		JSONArray jarr = new JSONArray();

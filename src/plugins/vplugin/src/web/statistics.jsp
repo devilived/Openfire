@@ -64,7 +64,7 @@ jQuery.noConflict();
 <body>
 	<div class="admin-content">
 		<div class="am-g">
-			<div class="am-u-sm-12">
+			<div class="am-u-sm-6">
 				<script id="ver-tpl" type="text/x-handlebars-template">
 				<table class="am-table am-table-bd am-table-striped admin-content-table">
 					<caption>客户端版本统计  在线量：[安卓:{{ifnullZero android}} / 苹果:{{ifnullZero ios}}]</caption>
@@ -82,7 +82,38 @@ jQuery.noConflict();
 				</table>
 				</script>
 			</div>
+			<div class="am-u-sm-6">
+				<script id="last10-tpl" type="text/x-handlebars-template">
+				<table class="am-table am-table-bd am-table-striped admin-content-table">
+					<caption>最后10名注册时间</caption>
+					<thead><tr><th>uid</th><th>昵称</th><th>注册时间</th></tr></thead>
+					<tbody>
+					{{#each this}}
+  						<tr>
+							<td>{{uid}}</td>
+							<td>{{nick}}</td>
+							<td>{{regtime}}</td>
+						</tr>
+					{{/each}}
+					</tbody>
+				</table>
+				</script>
+			</div>
 			
+			<div class="am-u-sm-12">
+				<script id="reghourstat-tpl" type="text/x-handlebars-template">
+				<table class="am-table am-table-bd am-table-striped admin-content-table">
+					<caption> </caption>
+					<thead><tr>{{#each this}}<th>{{@index}}</th>{{/each}}</tr></thead>
+					<tbody>
+					<tr>
+					{{#each this}}
+							<td>{{this}}</td>
+					{{/each}}</tr>
+					</tbody>
+				</table>
+				</script>
+			</div>
 			<div class="am-u-sm-12">
 				<table class="am-table am-table-bd am-table-striped admin-content-table">
 					<caption>收入统计</caption>

@@ -142,7 +142,7 @@ public class PayController {
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
 
-		JSONObject json = order.toPayinfo();
+		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("d", order.toPayinfo());
 		// log.info("WX INFO:{}",json.toJSONString());

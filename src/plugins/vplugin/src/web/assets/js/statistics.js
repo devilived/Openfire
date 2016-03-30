@@ -33,6 +33,17 @@ jQuery(function($) {
 		var tpl = Handlebars.compile(html);
 		$("#ver-tpl").after(tpl(json.d));
 	});
+	
+	$.get("api/web/sys/last10info.json").success(function(json) {
+		var html = $("#last10-tpl").html();
+		var tpl = Handlebars.compile(html);
+		$("#last10-tpl").after(tpl(json.d));
+	});
+	$.get("api/web/sys/reghourinfo.json").success(function(json) {
+		var html = $("#reghourstat-tpl").html();
+		var tpl = Handlebars.compile(html);
+		$("#reghourstat-tpl").after(tpl(json.d));
+	});
 	$.get("api/web/sys/moneyinfo.json").success(function(json) {
 		var data=json.d;
 		if(data&&data.KEY_WEEK){

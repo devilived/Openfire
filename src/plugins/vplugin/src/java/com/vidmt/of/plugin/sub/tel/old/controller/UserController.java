@@ -37,6 +37,7 @@ import com.vidmt.of.plugin.sub.tel.entity.SysLog.Logtype;
 import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.entity.OldUser;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
+import com.vidmt.of.plugin.sub.tel.old.utils.UserStatUtil;
 import com.vidmt.of.plugin.utils.CommUtil;
 import com.vidmt.of.plugin.utils.VUtil;
 
@@ -67,6 +68,7 @@ public class UserController {
 		try {
 			Acc acc = new Acc("phone:" + account);
 			User user = userService.register(acc, pwd);
+			UserStatUtil.put(user);
 
 			// UserManager.getUserProvider().createUser("10", pwd, null, null);
 			// User user = null;
