@@ -144,12 +144,17 @@ public class UserService extends CrudService<UserDao, User> {
 		user.setSex(User.SEX_F);
 		user.setBirth(new java.sql.Date(System.currentTimeMillis() - 20L * 365 * 24 * 60 * 60 * 1000));
 		try {
-			if (IdGen.nextUid() < 0) {
-				long max = dao.maxUid();
-				IdGen.initUid(max);
+			synchronized (IdGen.class) {
+				if (IdGen.curUid() < 0) {
+					long max = dao.maxUid();
+					IdGen.initUid(max);
+				}
+				long uid = IdGen.curUid() + 1;
+				user.setId(uid);
+				IdGen.updateUid();
 			}
-			long uid = IdGen.nextUid();
-			user.setId(uid);
+			
+			
 			dao.save(user);
 			if (acc.isAdmin()) {
 				dao.updateUid(Acc.ADMIN_UID, "id", user.getId());
