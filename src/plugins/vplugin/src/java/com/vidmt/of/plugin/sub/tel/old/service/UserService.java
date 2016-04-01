@@ -27,6 +27,7 @@ import com.vidmt.of.plugin.sub.tel.cache.UserCache;
 import com.vidmt.of.plugin.sub.tel.entity.Lvl;
 import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.entity.User.UserStatus;
+import com.vidmt.of.plugin.sub.tel.misc.IdGen;
 import com.vidmt.of.plugin.sub.tel.old.dao.LocationDao;
 import com.vidmt.of.plugin.sub.tel.old.dao.TraceDao;
 import com.vidmt.of.plugin.sub.tel.old.dao.UserDao;
@@ -135,21 +136,23 @@ public class UserService extends CrudService<UserDao, User> {
 		if (CommUtil.isEmpty(plainpwd)) {
 			throw new IllegalArgumentException("password cant be empty");
 		}
-		// if (!acc.isAdmin() && AccType.uid == acc.type()) {
-		// 非admin不能通过UID注册
-		// throw new IllegalArgumentException("uid cant be registered by api
-		// except admin");
-		// }
+		if (!acc.isAdmin() && AccType.uid == acc.type()) {// 非admin不能通过UID注册
+			throw new IllegalArgumentException("uid cant be registered by api except admin");
+		}
 		User user = createUserByAcc(acc);
 		user.setStatus(UserStatus.NORMAL);
 		user.setSex(User.SEX_F);
 		user.setBirth(new java.sql.Date(System.currentTimeMillis() - 20L * 365 * 24 * 60 * 60 * 1000));
 		try {
+			if (IdGen.nextUid() < 0) {
+				long max = dao.maxUid();
+				IdGen.initUid(max);
+			}
+			long uid = IdGen.nextUid();
+			user.setId(uid);
 			dao.save(user);
 			if (acc.isAdmin()) {
 				dao.updateUid(Acc.ADMIN_UID, "id", user.getId());
-			} else if (AccType.uid == acc.type()) {
-				dao.updateUid(Long.valueOf(acc.value()), "id", user.getId());
 			}
 			try {
 				AuthFactory.setPassword(acc.asString(), plainpwd);

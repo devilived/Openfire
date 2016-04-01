@@ -18,9 +18,12 @@ import com.vidmt.of.plugin.sub.tel.entity.User;
 public interface UserDao extends CrudDao<User> {
 	@Override
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	@Insert("INSERT INTO v_user(`name`,nick,email,phone,sex,birth,status,create_date) "
-			+ "VALUES(#{name},#{nick},#{email},#{phone},#{sex},#{birth},#{status},now())")
-	int save(User entity);
+	@Insert("INSERT INTO v_user(id,`name`,nick,email,phone,sex,birth,status,create_date) "
+			+ "VALUES(#{id},#{name},#{nick},#{email},#{phone},#{sex},#{birth},#{status},now())")
+	public int save(User entity);
+	
+	@Select("SELECT MAX(id) FROM v_user")
+	public long maxUid();
 
 	@Override
 	public User load(Long id);
