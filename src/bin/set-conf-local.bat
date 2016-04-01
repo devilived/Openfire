@@ -1,4 +1,4 @@
 @echo off
-copy /q ..\conf\openfire-local.xml ..\conf\openfire.xml
-copy /q ..\lib\log4j-debug.xml ..\lib\log4j.xml
+copy /y ..\conf\openfire-local.xml ..\conf\openfire.xml
+copy /y ..\lib\log4j-debug.xml ..\lib\log4j.xml
 
