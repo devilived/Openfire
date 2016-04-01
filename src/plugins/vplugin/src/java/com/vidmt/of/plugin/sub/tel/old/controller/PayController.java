@@ -43,6 +43,7 @@ import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxPayUtil;
 import com.vidmt.of.plugin.sub.tel.old.service.LvlService;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
 import com.vidmt.of.plugin.sub.tel.old.service.UserService;
+import com.vidmt.of.plugin.sub.tel.old.utils.UserStatUtil;
 import com.vidmt.of.plugin.sub.tel.pay.AliOrder;
 import com.vidmt.of.plugin.sub.tel.pay.IapOrder;
 import com.vidmt.of.plugin.sub.tel.pay.WxOrder;
@@ -428,6 +429,8 @@ public class PayController {
 	}
 
 	private void paysuccess(Order order, String allparams) {
+		UserStatUtil.putPay(order.getTotalFee());
+
 		SysLog log = new SysLog(Logtype.PAY, order.getUid());
 		log.setTgtUid(order.getUid());
 		log.setTime(order.getPayTime());

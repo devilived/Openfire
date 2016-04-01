@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.sub.tel.entity.Paylog;
-import com.vidmt.of.plugin.sub.tel.entity.User;
 import com.vidmt.of.plugin.sub.tel.old.service.PaylogService;
 import com.vidmt.of.plugin.sub.tel.old.utils.UserStatUtil;
 import com.vidmt.of.plugin.sub.tel.old.utils.VerStatUtil;
@@ -41,11 +40,16 @@ public class WebStatController {
 		json.put("d", UserStatUtil.getLast10Stat());
 		return json;
 	}
-	@RequestMapping("/sys/reghourinfo.*")
-	public JSONObject reghourinfo() {
+	@RequestMapping("/sys/hourinfo.*")
+	public JSONObject hourinfo() {
+		JSONObject data = new JSONObject();
+		data.put("reg", UserStatUtil.getHourRegStat());
+		data.put("pay", UserStatUtil.getHourPayStat());
+		data.put("money", UserStatUtil.getHourMoneyStat());
+		
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
-		json.put("d", UserStatUtil.getHourCntStat());
+		json.put("d", data);
 		return json;
 	}
 	

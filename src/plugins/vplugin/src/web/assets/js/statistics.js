@@ -39,10 +39,10 @@ jQuery(function($) {
 		var tpl = Handlebars.compile(html);
 		$("#last10-tpl").after(tpl(json.d));
 	});
-	$.get("api/web/sys/reghourinfo.json").success(function(json) {
-		var html = $("#reghourstat-tpl").html();
+	$.get("api/web/sys/hourinfo.json").success(function(json) {
+		var html = $("#hourstat-tpl").html();
 		var tpl = Handlebars.compile(html);
-		$("#reghourstat-tpl").after(tpl(json.d));
+		$("#hourstat-tpl").after(tpl(json.d));
 	});
 	$.get("api/web/sys/moneyinfo.json").success(function(json) {
 		var data=json.d;

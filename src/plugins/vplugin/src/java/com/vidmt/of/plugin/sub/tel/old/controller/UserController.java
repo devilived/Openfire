@@ -68,7 +68,7 @@ public class UserController {
 		try {
 			Acc acc = new Acc("phone:" + account);
 			User user = userService.register(acc, pwd);
-			UserStatUtil.put(user);
+			UserStatUtil.putReg(user.getId(), user.getNick());
 
 			// UserManager.getUserProvider().createUser("10", pwd, null, null);
 			// User user = null;

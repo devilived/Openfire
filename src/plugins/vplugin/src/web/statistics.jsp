@@ -101,15 +101,25 @@ jQuery.noConflict();
 			</div>
 			
 			<div class="am-u-sm-12">
-				<script id="reghourstat-tpl" type="text/x-handlebars-template">
+				<script id="hourstat-tpl" type="text/x-handlebars-template">
 				<table class="am-table am-table-bd am-table-striped admin-content-table">
-					<caption> </caption>
-					<thead><tr>{{#each this}}<th>{{@index}}</th>{{/each}}</tr></thead>
+					<caption>每小时统计情况</caption>
+					<thead><tr><th>&nbsp;</th>{{#each this}}<th>{{@index}}</th>{{/each}}</tr></thead>
 					<tbody>
 					<tr>
-					{{#each this}}
-							<td>{{this}}</td>
-					{{/each}}</tr>
+						<td>注册数</td>
+						{{#each reg}}<td>{{this}}</td>{{/each}}
+					</tr>
+
+					<tr>
+						<td>会员数</td>
+						{{#each pay}}<td>{{this}}</td>{{/each}}
+					</tr>
+
+					<tr>
+						<td>收入</td>
+						{{#each money}}<td>{{this}}</td>{{/each}}
+					</tr>
 					</tbody>
 				</table>
 				</script>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -17,7 +16,7 @@ import com.vidmt.of.plugin.sub.tel.entity.User;
 @MybatisAnno
 public interface UserDao extends CrudDao<User> {
 	@Override
-	@Options(useGeneratedKeys = true, keyProperty = "id")
+//	@Options(useGeneratedKeys = true, keyProperty = "id")
 	@Insert("INSERT INTO v_user(id,`name`,nick,email,phone,sex,birth,status,create_date) "
 			+ "VALUES(#{id},#{name},#{nick},#{email},#{phone},#{sex},#{birth},#{status},now())")
 	public int save(User entity);
