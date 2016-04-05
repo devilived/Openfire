@@ -35,9 +35,13 @@ jQuery(function($) {
 	});
 	
 	$.get("api/web/sys/last10info.json").success(function(json) {
-		var html = $("#last10-tpl").html();
-		var tpl = Handlebars.compile(html);
-		$("#last10-tpl").after(tpl(json.d));
+		if(json.c==0){
+			json.d=json.d.reverse();
+			var html = $("#last10-tpl").html();
+			var tpl = Handlebars.compile(html);
+			$("#last10-tpl").after(tpl(json.d));
+		}
+		
 	});
 	$.get("api/web/sys/hourinfo.json").success(function(json) {
 		var html = $("#hourstat-tpl").html();
