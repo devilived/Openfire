@@ -125,9 +125,9 @@ public class PayController {
 
 	@ResponseBody
 	@RequestMapping("/iappay/getPayInfo.*")
-	public JSONObject getAppayOrderInfo(String vipType, boolean debug, HttpServletRequest req) {
+	public JSONObject getAppayOrderInfo(String lvltype, boolean debug, HttpServletRequest req) {
 		Long uid = (Long) req.getAttribute("uid");
-		LvlType lvlType = LvlType.valueOf(vipType);
+		LvlType lvlType = LvlType.valueOf(lvltype);
 
 		IapOrder order = new IapOrder();
 		order.setId(Order.genId());
