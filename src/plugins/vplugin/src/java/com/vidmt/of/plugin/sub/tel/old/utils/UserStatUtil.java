@@ -37,6 +37,7 @@ public class UserStatUtil {
 			Arrays.fill(hourRegStat, 0);
 			Arrays.fill(hourPayStat, 0);
 			Arrays.fill(hourMoneyStat, 0);
+			today = date;
 		}
 		int hour = cld.get(Calendar.HOUR_OF_DAY);
 		hourRegStat[hour] += 1;
@@ -49,6 +50,7 @@ public class UserStatUtil {
 			Arrays.fill(hourRegStat, 0);
 			Arrays.fill(hourPayStat, 0);
 			Arrays.fill(hourMoneyStat, 0);
+			today = date;
 		}
 		int hour = cld.get(Calendar.HOUR_OF_DAY);
 		hourPayStat[hour] += 1;

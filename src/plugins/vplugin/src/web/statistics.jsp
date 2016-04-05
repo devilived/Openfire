@@ -104,7 +104,7 @@ jQuery.noConflict();
 				<script id="hourstat-tpl" type="text/x-handlebars-template">
 				<table class="am-table am-table-bd am-table-striped admin-content-table">
 					<caption>每小时统计情况</caption>
-					<thead><tr><th>&nbsp;</th>{{#each this}}<th>{{@index}}</th>{{/each}}</tr></thead>
+					<thead><tr><th>&nbsp;</th>{{#each reg}}<th>{{@index}}</th>{{/each}}</tr></thead>
 					<tbody>
 					<tr>
 						<td>注册数</td>
@@ -118,7 +118,7 @@ jQuery.noConflict();
 
 					<tr>
 						<td>收入</td>
-						{{#each money}}<td>{{this}}</td>{{/each}}
+						{{#each money}}<td>{{calint this '/' 100 }}</td>{{/each}}
 					</tr>
 					</tbody>
 				</table>
