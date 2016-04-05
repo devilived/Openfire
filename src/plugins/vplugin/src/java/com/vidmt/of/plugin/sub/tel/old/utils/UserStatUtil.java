@@ -1,5 +1,6 @@
 package com.vidmt.of.plugin.sub.tel.old.utils;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Queue;
@@ -10,6 +11,7 @@ public class UserStatUtil {
 	private static int[] hourRegStat = new int[24];
 	private static int[] hourPayStat = new int[24];
 	private static int[] hourMoneyStat = new int[24];
+	private static int today = -1;
 
 	private static class RegItem {
 		public Long uid;
@@ -30,12 +32,24 @@ public class UserStatUtil {
 			last10Stat.poll();
 			last10Stat.offer(item);
 		}
+		int date = cld.get(Calendar.DAY_OF_MONTH);
+		if (date != today) {
+			Arrays.fill(hourRegStat, 0);
+			Arrays.fill(hourPayStat, 0);
+			Arrays.fill(hourMoneyStat, 0);
+		}
 		int hour = cld.get(Calendar.HOUR_OF_DAY);
 		hourRegStat[hour] += 1;
 	}
 
 	public static synchronized void putPay(int money) {
 		Calendar cld = Calendar.getInstance();
+		int date = cld.get(Calendar.DAY_OF_MONTH);
+		if (date != today) {
+			Arrays.fill(hourRegStat, 0);
+			Arrays.fill(hourPayStat, 0);
+			Arrays.fill(hourMoneyStat, 0);
+		}
 		int hour = cld.get(Calendar.HOUR_OF_DAY);
 		hourPayStat[hour] += 1;
 		hourMoneyStat[hour] += money;
