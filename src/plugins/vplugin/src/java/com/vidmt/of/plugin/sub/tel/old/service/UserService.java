@@ -151,11 +151,10 @@ public class UserService extends CrudService<UserDao, User> {
 				}
 				long uid = IdGen.curUid() + 1;
 				user.setId(uid);
+				dao.save(user);
 				IdGen.updateUid();
 			}
-			
-			
-			dao.save(user);
+
 			if (acc.isAdmin()) {
 				dao.updateUid(Acc.ADMIN_UID, "id", user.getId());
 			}
