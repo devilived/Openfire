@@ -131,6 +131,7 @@ jQuery.noConflict();
 							<th>&nbsp;</th>
 							<th>支付宝/天</th>
 							<th>微信/天</th>
+							<th>IAP/天</th>
 							<th>合计/天</th>
 							<th>年会员/个</th>
 						</tr>
@@ -142,6 +143,7 @@ jQuery.noConflict();
 							<td>{{showday @index}}</td>
 							<td>{{alicnt}}笔&nbsp;/&nbsp;{{cal alimoney '/' 100}}元</td>
 							<td>{{wxcnt}}笔&nbsp;/&nbsp;{{cal wxmoney '/' 100 }}元</td>
+							<td>{{iapcnt}}笔&nbsp;/&nbsp;{{cal iapmoney '/' 100 }}元</td>
 							<td>{{cnt}}笔&nbsp;/&nbsp;{{cal money '/' 100 }}元</td>
 							<td>{{yearcnt}}个</td>
 						</tr>
@@ -150,6 +152,7 @@ jQuery.noConflict();
 						<td>一周平均</td>
 						<td>{{calint KEY_WEEK_ALI_CNT '/' 7}}笔&nbsp;/&nbsp;{{cal KEY_WEEK_ALI_AVG '/' 100}}元</td>
 						<td>{{calint KEY_WEEK_WX_CNT '/' 7}}笔&nbsp;/&nbsp;{{cal KEY_WEEK_WX_AVG '/' 100}}元</td>
+						<td>{{calint KEY_WEEK_IAP_CNT '/' 7}}笔&nbsp;/&nbsp;{{cal KEY_WEEK_IAP_AVG '/' 100}}元</td>
 						<td>{{calint KEY_WEEK_CNT '/' 7}}笔&nbsp;/&nbsp;{{cal KEY_WEEK_AVG '/' 100}}元</td>
 						<td>{{calint KEY_WEEK_YEAR_CNT '/' 7}}个</td>
 					</tr>

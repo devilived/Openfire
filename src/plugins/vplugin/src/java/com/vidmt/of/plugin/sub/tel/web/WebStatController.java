@@ -40,19 +40,20 @@ public class WebStatController {
 		json.put("d", UserStatUtil.getLast10Stat());
 		return json;
 	}
+
 	@RequestMapping("/sys/hourinfo.*")
 	public JSONObject hourinfo() {
 		JSONObject data = new JSONObject();
 		data.put("reg", UserStatUtil.getHourRegStat());
 		data.put("pay", UserStatUtil.getHourPayStat());
 		data.put("money", UserStatUtil.getHourMoneyStat());
-		
+
 		JSONObject json = new JSONObject();
 		json.put("c", 0);
 		json.put("d", data);
 		return json;
 	}
-	
+
 	@RequestMapping("/sys/verinfo.*")
 	public JSONObject verinfo() {
 		JSONArray jarr = new JSONArray();
@@ -81,6 +82,8 @@ public class WebStatController {
 		public int alicnt;
 		public int wxmoney;
 		public int wxcnt;
+		public int iapmoney;
+		public int iapcnt;
 
 		public int yearcnt;
 	}
@@ -104,7 +107,7 @@ public class WebStatController {
 			long logtime = paylog.getPayTime().getTime();
 			int days = (int) ((todayEnd - logtime) / aday);
 			int totalfee = paylog.getTotalFee();
-			if (totalfee == 15000) {
+			if (totalfee == 15000 || totalfee == 158000) {
 				weekdaySum[days].yearcnt += 1;
 			}
 			if (days < 8) {
@@ -116,6 +119,10 @@ public class WebStatController {
 				case WX:
 					weekdaySum[days].wxmoney += totalfee;
 					weekdaySum[days].wxcnt += 1;
+					break;
+				case IAP:
+					weekdaySum[days].iapmoney += totalfee;
+					weekdaySum[days].iapcnt += 1;
 					break;
 				default:
 					break;
