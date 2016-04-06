@@ -158,7 +158,7 @@ jQuery.noConflict();
 					</tr>
 					<tr class="row">
 						<td>本月总共</td>
-						<td colspan='3'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
+						<td colspan='5'>{{cal KEY_SUM_MONTH '/' 100}}元</td>
 					</tr>
 					</script>
 					</tbody>
