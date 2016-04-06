@@ -64,7 +64,7 @@ public class VPlugin implements Plugin {
 					log.info("安装插件[{}]结束......", subPlugins[i].getClass().getName());
 					i++;
 				} catch (Throwable e) {
-					log.error("安装插件[{}]失败!!!", e);
+					log.error("安装插件[{}]失败!!!", clz.getName());
 					destroyPlugin();
 				}
 			}

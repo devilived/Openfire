@@ -26,6 +26,8 @@
 			<mvc:exclude-mapping path="/vplugin/api/1/user/changePwd.*" />
 			<mvc:exclude-mapping path="/vplugin/api/1/pay/ali/notify.api" />
 			<mvc:exclude-mapping path="/vplugin/api/1/pay/wx/notify.api" />
+			<mvc:exclude-mapping path="/vplugin/api/1/pay/iap/notify.api" />
+			
 			
 			<bean class="com.vidmt.of.plugin.spring.AuthIntercepter" />
 		</mvc:interceptor>

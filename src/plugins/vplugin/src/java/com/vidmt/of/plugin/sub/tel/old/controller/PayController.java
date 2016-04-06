@@ -125,7 +125,7 @@ public class PayController {
 
 	@ResponseBody
 	@RequestMapping("/iappay/getPayInfo.*")
-	public JSONObject getAppayOrderInfo(String lvltype, boolean debug, HttpServletRequest req) {
+	public JSONObject getAppayOrderInfo(String lvltype, Boolean debug, HttpServletRequest req) {
 		Long uid = (Long) req.getAttribute("uid");
 		LvlType lvlType = LvlType.valueOf(lvltype);
 
@@ -139,7 +139,7 @@ public class PayController {
 		Lvl lvl = lvlService.getLvlByType(lvlType);
 		order.setSubject(Order.genSubject(lvl) + prefix);
 
-		order.setTotalFee(debug ? 1 : (lvlType == LvlType.TRY ? 12 * 100 : 158 * 100));
+		order.setTotalFee((debug != null && debug) ? 1 : (lvlType == LvlType.TRY ? 12 * 100 : 158 * 100));
 		order.setUid(uid);
 		order.setAttach(uid + "-" + lvlType.name());
 
@@ -362,7 +362,7 @@ public class PayController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/iap/notify.api")
+	@RequestMapping("/iap/notify.*")
 	public JSONObject apPayNotify(long uid, String out_trade_no, String trade_no, LvlType lvltype, String receipt,
 			Boolean isSandebox, Date paytime) {
 		Order oldOrder = orderService.load(out_trade_no);
@@ -434,8 +434,7 @@ public class PayController {
 		SysLog log = new SysLog(Logtype.PAY, order.getUid());
 		log.setTgtUid(order.getUid());
 		log.setTime(order.getPayTime());
-		log.setContent(
-				String.format("[%s]购买会员[%s,%s]：", order.getUid(), order.getLvlType(), order.getTotalFee() / 100f));
+		log.setContent(String.format("[%s]购买会员[%s,%s]：", order.getUid(), order.getLvlType(), order.getTotalFee() / 100f));
 		VUtil.log(log);
 
 		orderService.save(order);
