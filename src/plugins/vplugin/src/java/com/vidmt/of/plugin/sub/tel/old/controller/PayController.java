@@ -398,6 +398,10 @@ public class PayController {
 				json.put("c", CodeException.ERR_UNKOWN);
 				return json;
 			}
+			if (paytime == null) {
+				paytime = new Date();
+			}
+
 			Order order = new Order();
 			order.setId(out_trade_no);
 			order.setUid(uid);
@@ -434,7 +438,8 @@ public class PayController {
 		SysLog log = new SysLog(Logtype.PAY, order.getUid());
 		log.setTgtUid(order.getUid());
 		log.setTime(order.getPayTime());
-		log.setContent(String.format("[%s]购买会员[%s,%s]：", order.getUid(), order.getLvlType(), order.getTotalFee() / 100f));
+		log.setContent(
+				String.format("[%s]购买会员[%s,%s]：", order.getUid(), order.getLvlType(), order.getTotalFee() / 100f));
 		VUtil.log(log);
 
 		orderService.save(order);
