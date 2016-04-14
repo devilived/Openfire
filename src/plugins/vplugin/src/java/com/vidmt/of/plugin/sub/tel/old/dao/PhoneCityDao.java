@@ -13,6 +13,6 @@ public interface PhoneCityDao extends CrudDao<PhoneCity> {
 	public PhoneCity getByPrefix(String prefix);
 
 	@Override
-	@Insert("INSERT INTO v_phone_city(prefix,supplier,province,city,suit,from)VALUES(#{prefix},#{supplier},#{province},#{city},#{suit},#{from})")
+	@Insert("INSERT INTO v_phone_city(prefix,supplier,province,city,suit,`from`)VALUES(#{prefix},#{supplier},#{province},#{city},#{suit},#{from})")
 	public int save(PhoneCity entity);
 }

@@ -88,7 +88,7 @@ public class PushPlugin extends AbsSessionEventListener implements Plugin {
 								}
 								Map<String, String> prop = usrMgr.getUser(from).getProperties();
 								prop.remove(PushPlugin.KEY_IOS_TOKEN);
-								log.debug(">>>>用户手动退出登录,清空session");
+								log.info(">>>>IOS用户手动退出登录,清空token");
 							}
 						} catch (Throwable e) {
 							log.error("接受MINA 消息出错", e);
@@ -97,6 +97,7 @@ public class PushPlugin extends AbsSessionEventListener implements Plugin {
 						}
 					};
 				});
+				log.info(">>>>IOS用户登录添加手工退出的监听");
 			}
 
 		} catch (Throwable e) {
