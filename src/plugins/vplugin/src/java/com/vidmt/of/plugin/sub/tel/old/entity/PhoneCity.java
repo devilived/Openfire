@@ -8,6 +8,7 @@ public class PhoneCity extends CrudEntity {
 	private String province;
 	private String city;
 	private String suit;
+	private String from;
 
 	public String getPrefix() {
 		return prefix;
@@ -47,6 +48,14 @@ public class PhoneCity extends CrudEntity {
 
 	public void setSuit(String suit) {
 		this.suit = suit;
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
 	}
 
 }
