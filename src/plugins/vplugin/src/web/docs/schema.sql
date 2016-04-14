@@ -129,5 +129,15 @@ CREATE TABLE `v_user` (
   KEY `idx_user_nick` (`nick`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `v_phone_city` (
+  `prefix` char(7) NOT NULL COMMENT ' 手机号前7位',
+  `supplier` varchar(10) DEFAULT NULL COMMENT '运行商',
+  `province` varchar(10) DEFAULT NULL COMMENT '省份',
+  `city` varchar(15) DEFAULT NULL COMMENT '城市',
+  `suit` varchar(10) DEFAULT NULL COMMENT '卡类型',
+  PRIMARY KEY (`prefix`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
 SET FOREIGN_KEY_CHECKS = 1;
 
