@@ -296,8 +296,10 @@ public class PayController {
 	@RequestMapping("/wx/notify.api")
 	public String wxpayNotify(HttpServletRequest req) {
 		// 通知频率为15/15/30/180/1800/1800/1800/1800/3600，单位：秒(正确处理重复的通知)
+		String xml=null;
 		try {
 			Document doc = XmlD4jUtil.getXmlDoc(new InputStreamReader(req.getInputStream(), "UTF-8"));
+			xml=doc.asXML();
 			Map<String, String> notifyMap = WxPayUtil.readXml(doc);
 			// log.info("WX RCV:{}",JSON.toJSONString(notifyMap));
 
@@ -356,7 +358,7 @@ public class PayController {
 			return WX_SUCCESS;
 		} catch (Throwable e) {
 			log.error("微信支付失败未知原因:", e);
-			VUtil.log(Logtype.ERROR, Acc.ADMIN_UID, null, "微信支付失败未知原因:" + CommUtil.fmtException(e));
+			VUtil.log(Logtype.ERROR, Acc.ADMIN_UID, null, "微信支付失败未知原因:" + CommUtil.fmtException(e)+"/xml:"+xml);
 			return WX_FAIL;
 		}
 	}
