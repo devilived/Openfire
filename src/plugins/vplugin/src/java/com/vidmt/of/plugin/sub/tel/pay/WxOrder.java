@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
 import com.vidmt.of.plugin.sub.tel.entity.Order;
+import com.vidmt.of.plugin.sub.tel.old.controller.PayController;
 import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxHttps;
 import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxPayConfig;
 import com.vidmt.of.plugin.sub.tel.old.pay.wxpay.WxPayUtil;
@@ -21,7 +22,7 @@ import com.vidmt.of.plugin.utils.VUtil;
 import com.vidmt.of.plugin.utils.XmlD4jUtil;
 
 public class WxOrder extends Order {
-	private static final Logger log = LoggerFactory.getLogger(Order.class);
+	private static final Logger log = LoggerFactory.getLogger(PayController.class);
 
 	private static final long serialVersionUID = 1L;
 	private static final int TRY_CNT = 5;
@@ -61,6 +62,9 @@ public class WxOrder extends Order {
 		// packageParams.add(new BasicNameValuePair("attach", uid + "#"
 		// +
 		// subject));// 注意参数列表按ascii顺序
+		if (this.attach == null) {
+			log.error("微信生成预付款出错：attach is error，order:"+this.toString());
+		}
 		packageParams.add(new BasicNameValuePair("attach", this.attach));// 注意参数列表按ascii顺序
 		packageParams.add(new BasicNameValuePair("body", subject));// 注:防止汉字导致的"签名错误"或支付页面乱码
 		packageParams.add(new BasicNameValuePair("mch_id", WxPayConfig.WXPAY_MERCHANT_ID));

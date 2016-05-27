@@ -60,6 +60,10 @@ public class PhoneQueryUtil {
 				pc.setSupplier(root.elementText("supplier"));
 				// pc.setSuit(data.getString("suit"));
 				pc.setFrom("tenpay.com");
+				if (pc.getCity() == null) {
+					log.error("获取财付通号码所在地出错:{}", doc.asXML());
+					return null;
+				}
 				return pc;
 			} else {
 				log.error("获取财付通号码所在地出错:{}", doc.asXML());
