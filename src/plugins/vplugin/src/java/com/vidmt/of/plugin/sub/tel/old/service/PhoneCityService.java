@@ -40,10 +40,6 @@ public class PhoneCityService extends CrudService<PhoneCityDao, PhoneCity> {
 			}
 		}
 
-		// if (pc != null) {
-		// SysCache.putPhonecity(pc);
-		// }
-		// }
 		return pc;
 	}
 }
