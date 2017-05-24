@@ -1382,7 +1382,7 @@
                             <mkdir dir="@{pluginlib}/classes" />
 
                             <!-- copy the source we want to compile -->
-                            <copy todir="@{pluginlib}/source">
+                            <copy todir="@{pluginlib}/source" encoding="utf8">
                                 <fileset dir="@{pluginsrc}/@{plugin}/src/java" includes="**/*.java" />
                                 <filterset>
                                     <filter token="DATE" value="${buildJavaDate}"/>
